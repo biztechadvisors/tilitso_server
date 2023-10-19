@@ -1,0 +1,41 @@
+const express = require("express");
+const categoryController = require("./category.controller");
+const { jwtStrategy } = require("../../../middleware/strategy");
+const upload = require("../../../awsbucket");
+
+const categoryRouter = express.Router();
+
+categoryRouter.route("/getAllCategory").get(categoryController.getCategoryList);
+categoryRouter.route("/getAllSubCategory").get(categoryController.getSubCategoryList);
+categoryRouter.route("/getAllSubChildCategory").get(categoryController.getSubChildCategoryList);
+categoryRouter.route("/create").post(categoryController.addCategory);
+categoryRouter.route("/child-list").get(categoryController.getSubChildList);
+categoryRouter.route("/getCategoryById").get(categoryController.getCategoryById);
+categoryRouter.route("/create-sub").post( categoryController.addSubCategory);
+categoryRouter.route("/create-sub-child").post( categoryController.addSubChildCategory);
+categoryRouter.route("/update").post( categoryController.updateCategory);
+categoryRouter.route("/search/allcombine").post(categoryController.getAllCombine);
+categoryRouter.route("/super-create").post( categoryController.createSuperCat);
+categoryRouter.route("/super-update").put( categoryController.SuperCategoryUpdate);
+categoryRouter.route("/super-list").get( categoryController.SuperCategoryList);
+categoryRouter.route("/super/delete").post( categoryController.SuperCategoryDelete);
+categoryRouter.route("/main-list").get(categoryController.getMainList);
+categoryRouter.route("/search-by-value").post(categoryController.getSearchdropdown);
+categoryRouter.route("/admin/main-list").get( categoryController.getAdminMainList);
+categoryRouter.route("/main-list/update").post( upload.single("thumbnail"), categoryController.getMainListUpdate);
+categoryRouter.route("/main/delete").delete( categoryController.getMainCatDelete);
+categoryRouter.route("/sub-list").get(categoryController.getSubCategory);
+categoryRouter.route("/sub-list/update").post( upload.single("thumbnail"), categoryController.getSubCatListUpdate);
+categoryRouter.route("/sub-list/delete").delete( categoryController.getDeletedSubCatList);
+categoryRouter.route("/child/deleteById").delete( categoryController.deleteCategory);
+categoryRouter.route("/child/update").put( categoryController.childCatUpdate);
+categoryRouter.route("/cn/list").get(categoryController.getAllCategoryBySlug);
+categoryRouter.route("/findbysubchild").post(categoryController.filterByCategoryList);
+categoryRouter.route("/covid-offer/senetry-pad").get(categoryController.getAllCovidProduct);
+categoryRouter.route("/catlogsearch/child-category").post(categoryController.getFilterbyCategory);
+categoryRouter.route("/catlogsearch/product").post(categoryController.getProductBySubcategory);
+categoryRouter.route("/subcatlog/search/product").post(categoryController.getFilterbyChildCategory);
+categoryRouter.route("/category-brand-list").post(categoryController.getBrandCatList);
+categoryRouter.route("/banner-category-list").get(categoryController.getAllCategoryBannerlist);
+
+module.exports = categoryRouter;
