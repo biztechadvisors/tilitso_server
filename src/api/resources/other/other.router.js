@@ -4,6 +4,6 @@ const otherController = require('./other.controller')
 const otherRouter = express.Router();
 
 
-otherRouter.route("/create").post(otherController.create)
+otherRouter.route("/getWallet").get(otherController.getWallet)
 
 module.exports = otherRouter;

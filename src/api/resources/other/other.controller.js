@@ -1,12 +1,16 @@
+const { db } = require("../../../models")
 
 module.exports = {
 
-    async create(req, res, next) {
+    async getWallet(req, res, next) {
         try {
-            console.log(req.body)
-            return res.send(true)
+            const { customerId } = req.body;
+            const wallet = await db.wallet_point.findAll({
+                where: customerId ? { customerId } : {},
+            });
+            return res.send({ status: 200, Data: wallet });
         } catch (err) {
-            console.log(err)
+            console.log(err);
         }
     }
 }

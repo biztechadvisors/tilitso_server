@@ -13,8 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       attempt: DataTypes.INTEGER,
       loggedOutAt: DataTypes.DATE,
-      // rewardpoints: DataTypes.STRING,
-      // usedrewardpoints: DataTypes.STRING,
     },
     {}
   );

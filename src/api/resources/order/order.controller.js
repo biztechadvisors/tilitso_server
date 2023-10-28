@@ -52,6 +52,38 @@ const findAddressList = (id) => {
     });
 };
 
+async function addPointsToWallet(customer, grandTotal, usedRwdPoint) {
+    if (!db || !db.wallet_point) {
+        console.log("ERROR-Wallet")
+        throw new Error('Database object is undefined or does not have a wallet_point property');
+    }
+
+    try {
+        const wallet = await db.wallet_point.findOne({ where: { customerId: customer.id } });
+        const points = Math.floor(grandTotal / 100);
+        if (wallet) {
+            let uRWDPNT = usedRwdPoint ? usedRwdPoint : 0;
+            const finalPnt = Math.floor(wallet.walletPoints + points - uRWDPNT);
+            const usedWalletPoints = Math.floor(wallet.usedWalletPoints + uRWDPNT);
+
+            await db.wallet_point.update({
+                walletPoints: finalPnt,
+                usedWalletPoints,
+            }, {
+                where: { customerId: customer.id },
+            });
+        } else {
+            await db.wallet_point.create({
+                walletPoints: points,
+                usedWalletPoints: 0,
+                customerId: customer.id,
+            });
+        }
+    } catch (error) {
+        console.log("ERROR-Wallet", error);
+    }
+}
+
 module.exports = {
     //    shiprocket -------------Start
     async getOrderTracking(req, res, next) {
@@ -199,9 +231,10 @@ module.exports = {
     },
 
     /* Add user api start here................................*/
+
     async index(req, res, next) {
         try {
-            const { razorpay_payment_id, paymentMethod, deliveryAddress, grandTotal, deliveryId, total_discount, shipping_charges } = req.body;
+            const { razorpay_payment_id, paymentMethod, deliveryAddress, grandTotal, deliveryId, total_discount, shipping_charges, usedRwdPoint } = req.body;
             const productList = req.body.product;
             const customer = await db.customer.findOne({ where: { id: req.body.id } });
             console.log("Ram")
@@ -264,6 +297,7 @@ module.exports = {
 
                 const order_id = shiprocketResponse.order_id; // Extract the order_id from the Shiprocket response
                 const shipment_id = shiprocketResponse.shipment_id;
+
                 let address;
                 if (deliveryAddress) {
                     address = await db.Address.create({
@@ -322,6 +356,8 @@ module.exports = {
                     customer,
                     { transaction: t }
                 );
+
+                await addPointsToWallet(customer, grandTotal, usedRwdPoint)
 
                 await t.commit();
 
