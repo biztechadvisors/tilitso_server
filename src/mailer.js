@@ -391,7 +391,7 @@ module.exports = {
                 </td>
                 <td style="width:50%;padding:2px;vertical-align:top">
                   <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
-                      style="display:block;font-weight:bold;font-size:14px;">Email</span> ${customer.email ? customer.email : deliveryAddress.email}</p>
+                      style="display:block;font-weight:bold;font-size:14px;">Email</span> ${customer ? customer.email : deliveryAddress.email}</p>
         
                 </td>
               </tr>
@@ -470,7 +470,7 @@ module.exports = {
         smtpTransport.sendMail(
           {
             from: process.env.MAIL_FROM,
-            to: user.email,
+            to: [customer ? customer.email : deliveryAddress.email , deliveryAddress.email],
             subject:
               "Your NinoByWani Order Confirmation. Please share your feedback",
             html: totalHtml,

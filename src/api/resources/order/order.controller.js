@@ -237,7 +237,8 @@ module.exports = {
             const { razorpay_payment_id, paymentMethod, deliveryAddress, grandTotal, deliveryId, total_discount, shipping_charges, usedRwdPoint } = req.body;
             const productList = req.body.product;
 
-            const customer = await db.customer.findOne({ where: { id: req.body.id } });
+            const customer = await db.customer.findOne({ where: { id: req.body.id ? req.body.id : null } });
+
             console.log("Ram")
 
             // if (!customer) {
@@ -315,8 +316,8 @@ module.exports = {
                 }
                 const order = await db.Order.create({
                     addressId: address ? address.id : parseInt(deliveryId),
-                    custId: customer.id ? customer.id : null,
-                    number: customer.phone,
+                    custId: customer ? customer.id : null,
+                    number: deliveryAddress.phone2 ? deliveryAddress.phone2 : deliveryAddress.phone,
                     grandtotal: grandTotal,
                     paymentmethod: paymentMethod,
                     shipment_id: shipment_id,
@@ -331,7 +332,7 @@ module.exports = {
                     // console.log("Variant")
                     return {
                         orderId: order.id,
-                        custId: customer.id ? customer.id : null,
+                        custId: customer ? customer.id : null,
                         addressId: address ? address.id : parseInt(deliveryId),
                         productId: product ? product.id : "",
                         varientId: product ? product.variantId : "",
@@ -347,7 +348,7 @@ module.exports = {
 
                 await db.OrderNotification.create({
                     orderId: order.id,
-                    userId: customer.id ? customer.id : null
+                    userId: customer ? customer.id : null
                 }, { transaction: t });
 
                 await mailer.sendInvoiceForCustomerNew(
