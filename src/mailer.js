@@ -363,7 +363,7 @@ module.exports = {
     });
   },
 
-  sendInvoiceForCustomerNew: (body, address, order_id, customer) => {
+  sendInvoiceForCustomerNew: (body, address, order_id, customer, deliveryAddress) => {
     console.log("Body", body.product)
     const htmlHeader = `<html>
         <body
@@ -391,7 +391,7 @@ module.exports = {
                 </td>
                 <td style="width:50%;padding:2px;vertical-align:top">
                   <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
-                      style="display:block;font-weight:bold;font-size:14px;">Email</span> ${customer.email}</p>
+                      style="display:block;font-weight:bold;font-size:14px;">Email</span> ${customer.email ? customer.email : deliveryAddress.email}</p>
         
                 </td>
               </tr>
@@ -405,7 +405,7 @@ module.exports = {
                   <p style="font-size:14px;margin:0 0 0 0;"><span
                       style="font-weight:bold;display:inline-block;min-width:146px">Order amount</span> Rs. ${body.grandTotal}</p>
                 <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Phone No</span> ${address ? address.phone : body.deliveryAddress.phone}</p>
-                      <p style="font-size:14px;margin:0 0 0 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Shipping Address</span>${address.shipping +", " + address.city + ", " + address.states}  </p>
+                      <p style="font-size:14px;margin:0 0 0 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Shipping Address</span>${address.shipping + ", " + address.city + ", " + address.states}  </p>
                 </td>
               </tr>
               <tr>
@@ -425,7 +425,7 @@ module.exports = {
                   <p style="font-size:14px;margin:0;">${item.Name}</p>
                 </td>
                 <td style="padding:2px;width:50%;text-align: right;">
-                  <p style="font-size:14px;margin:0;"> Rs.${item.quantity + "*" + item.netPrice + "=" + item.quantity * item.netPrice }</p>
+                  <p style="font-size:14px;margin:0;"> Rs.${item.quantity + "*" + item.netPrice + "=" + item.quantity * item.netPrice}</p>
                 </td>
               </tr>
               `;
@@ -450,47 +450,47 @@ module.exports = {
     const totalHtml = htmlHeader + htmlFooter;
     return new Promise((resolve, reject) => {
       try {
-        db.customer.findOne({ where: { email: customer.email } }).then((user) => {
-          if (user && user.verify == 1) {
-            var key = Math.random().toString(36).slice(2);
-            db.customer
-              .update({ verf_key: key }, { where: { id: user.id } })
-              .then((r) => {
-                var smtpTransport = nodemailer.createTransport({
-                  host: process.env.MAIL_HOST,
-                  port: process.env.MAIL_PORT,
-                  ignoreTLS: false,
-                  secure: false,
-                  auth: {
-                    user: process.env.MAIL_USERNAME,
-                    pass: process.env.MAIL_PASSWORD,
-                  },
-                  tls: { rejectUnauthorized: false },
-                });
-                smtpTransport.sendMail(
-                  {
-                    from: process.env.MAIL_FROM,
-                    to: user.email,
-                    subject:
-                      "Your NinoByWani Order Confirmation. Please share your feedback",
-                    html: totalHtml,
-                  },
-                  function (error, info) {
-                    if (error || (info && info.rejected.length)) {
-                      return reject({
-                        name: "Exception",
-                        msg: "Email Sending Failed",
-                        error: error,
-                      });
-                    }
-                    return resolve(true);
-                  }
-                );
-              });
-          } else {
-            reject(new Error("user not valid"));
-          }
+        // db.customer?.findOne({ where: { email: customer.email } }).then((user) => {
+        //   if (user && user.verify == 1) {
+        //     var key = Math.random().toString(36).slice(2);
+        //     db.customer
+        //       .update({ verf_key: key }, { where: { id: user.id } })
+        //       .then((r) => {
+        var smtpTransport = nodemailer.createTransport({
+          host: process.env.MAIL_HOST,
+          port: process.env.MAIL_PORT,
+          ignoreTLS: false,
+          secure: false,
+          auth: {
+            user: process.env.MAIL_USERNAME,
+            pass: process.env.MAIL_PASSWORD,
+          },
+          tls: { rejectUnauthorized: false },
         });
+        smtpTransport.sendMail(
+          {
+            from: process.env.MAIL_FROM,
+            to: user.email,
+            subject:
+              "Your NinoByWani Order Confirmation. Please share your feedback",
+            html: totalHtml,
+          },
+          function (error, info) {
+            if (error || (info && info.rejected.length)) {
+              return reject({
+                name: "Exception",
+                msg: "Email Sending Failed",
+                error: error,
+              });
+            }
+            return resolve(true);
+          }
+        );
+        // });
+        // } else {
+        //   reject(new Error("user not valid"));
+        // }
+        // });
       } catch (err) {
         reject(err);
       }

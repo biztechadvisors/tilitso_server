@@ -236,12 +236,13 @@ module.exports = {
         try {
             const { razorpay_payment_id, paymentMethod, deliveryAddress, grandTotal, deliveryId, total_discount, shipping_charges, usedRwdPoint } = req.body;
             const productList = req.body.product;
+
             const customer = await db.customer.findOne({ where: { id: req.body.id } });
             console.log("Ram")
 
-            if (!customer) {
-                return res.status(500).json({ errors: ['User is not found'] });
-            }
+            // if (!customer) {
+            //     return res.status(500).json({ errors: ['User is not found'] });
+            // }
             const t = await db.sequelize.transaction();
             try {
                 const orderId = "OD" + Math.floor(Math.random() * Date.now());
@@ -302,7 +303,7 @@ module.exports = {
                 if (deliveryAddress) {
                     address = await db.Address.create({
                         orderId: order_id,
-                        custId: req.body.id,
+                        custId: req.body.id ? req.body.id : null,
                         fullname: deliveryAddress.name2 ? deliveryAddress.name2 : deliveryAddress.name,
                         phone: deliveryAddress.phone2 ? deliveryAddress.phone2 : deliveryAddress.phone,
                         city: deliveryAddress.city2 ? deliveryAddress.city2 : deliveryAddress.city,
@@ -314,7 +315,7 @@ module.exports = {
                 }
                 const order = await db.Order.create({
                     addressId: address ? address.id : parseInt(deliveryId),
-                    custId: customer.id,
+                    custId: customer.id ? customer.id : null,
                     number: customer.phone,
                     grandtotal: grandTotal,
                     paymentmethod: paymentMethod,
@@ -330,7 +331,7 @@ module.exports = {
                     // console.log("Variant")
                     return {
                         orderId: order.id,
-                        custId: customer.id,
+                        custId: customer.id ? customer.id : null,
                         addressId: address ? address.id : parseInt(deliveryId),
                         productId: product ? product.id : "",
                         varientId: product ? product.variantId : "",
@@ -346,7 +347,7 @@ module.exports = {
 
                 await db.OrderNotification.create({
                     orderId: order.id,
-                    userId: customer.id
+                    userId: customer.id ? customer.id : null
                 }, { transaction: t });
 
                 await mailer.sendInvoiceForCustomerNew(
@@ -354,6 +355,7 @@ module.exports = {
                     address,
                     order_id,
                     customer,
+                    deliveryAddress,
                     { transaction: t }
                 );
 
