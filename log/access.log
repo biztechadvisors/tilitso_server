@@ -515,3 +515,5 @@
 [0mPOST /api/order/list [32m200[0m 226.114 ms - 5456[0m
 [0mPOST /api/order/OrderMatrix [32m200[0m 225.033 ms - 5435[0m
 [0mGET /api/order/getAllOrderInfo [32m200[0m 178.542 ms - 94[0m
+[0mGET /slug [32m200[0m 11.201 ms - 30[0m
+[0mGET /favicon.ico [33m404[0m 8.127 ms - 2482[0m
