@@ -23,9 +23,9 @@ const upload = multer({
   storage: multerS3({
     fileFilter,
     s3: s3,
-    bucket: "ninocodenox",
+    bucket: "tilitsobucket",
     metadata: function (req, file, cb) {
-      cb(null, { fieldName: "codenox_meta_data" });
+      cb(null, { fieldName: "diversitech_meta_data" });
     },
     key: function (req, file, cb) {
       cb(null, file.originalname);

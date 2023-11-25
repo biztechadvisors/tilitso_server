@@ -363,63 +363,49 @@ module.exports = {
     });
   },
 
-  sendInvoiceForCustomerNew: (body, address, order_id, customer, deliveryAddress) => {
-    console.log("Body", body.product)
+  sendInvoiceForCustomerNew: (body, address, order_id, shipment_id, customer, deliveryAddress) => {
     const htmlHeader = `<html>
-        <body
-          style="background-color:#fbfbfb;font-family: Open Sans, sans-serif;font-size:100%;font-weight:400;line-height:1.4;color:#000;">
-          <table
-            style="min-width:650px;margin:50px auto 10px;background-color:#fff;padding:50px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);-moz-box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24); border-top: solid 10px #88b433;">
-            <thead>
-              <tr>
-                <th style="text-align:left;"><img style="max-width: 80px;height:70px"
-                    src="https://nino-orpin.vercel.app/" width='80' alt="codenox"></th>
-                <th style="text-align:right;font-weight:bold;font-size: 14px;">${new Date()
-        .toISOString()
-        .slice(0, 10)}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="height:35px;"></td>
-              </tr>
-        
-              <tr>
-                <td style="width:50%;padding:2px;vertical-align:top">
-                  <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
-                      style="display:block;font-weight:bold;font-size:14px">Name</span> ${address.fullname}</p>    
-                </td>
-                <td style="width:50%;padding:2px;vertical-align:top">
-                  <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
-                      style="display:block;font-weight:bold;font-size:14px;">Email</span> ${customer ? customer.email : deliveryAddress.email}</p>
-        
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
-                  <p style="font-size:14px;margin:0 0 6px 0;"><span
-                      style="font-weight:bold;display:inline-block;min-width:150px">Order status</span><b
-                      style="color:green;font-weight:normal;margin:0">Success</b></p>
-                  <p style="font-size:14px;margin:0 0 6px 0;"><span
-                      style="font-weight:bold;display:inline-block;min-width:146px">Order ID</span> ${order_id}</p>
-                  <p style="font-size:14px;margin:0 0 0 0;"><span
-                      style="font-weight:bold;display:inline-block;min-width:146px">Order amount</span> Rs. ${body.grandTotal}</p>
-                <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Phone No</span> ${address ? address.phone : body.deliveryAddress.phone}</p>
-                      <p style="font-size:14px;margin:0 0 0 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Shipping Address</span>${address.shipping + ", " + address.city + ", " + address.states}  </p>
-                </td>
-              </tr>
-              <tr>
-                <td style="height:20px;"></td>
-              </tr>
-              <tr>
-                <td colspan="2" style="font-size:14px;padding:2px;font-weight: bold;">Items</td>
-              </tr>
-              ${body.product.map(function (item) {
-          return `
+    <body style="background-color:#fbfbfb;font-family: Open Sans, sans-serif;font-size:100%;font-weight:400;line-height:1.4;color:#000;">
+      <table style="min-width:650px;margin:50px auto 10px;background-color:#fff;padding:50px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);-moz-box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24); border-top: solid 10px #88b433;">
+        <thead>
+          <tr>
+            <th style="text-align:left;"><img style="max-width: 80px;height:70px" src="https://nino-orpin.vercel.app/" width='80' alt="codenox"></th>
+            <th style="text-align:right;font-weight:bold;font-size: 14px;">${new Date().toISOString().slice(0, 10)}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="height:35px;"></td>
+          </tr>
+          <tr>
+            <td style="width:50%;padding:2px;vertical-align:top">
+              <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:14px">Name</span> ${address.fullname}</p>
+            </td>
+            <td style="width:50%;padding:2px;vertical-align:top">
+              <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:14px;">Email</span> ${customer ? customer.email : deliveryAddress.email}</p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
+              <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:150px">Order status</span><b style="color:green;font-weight:normal;margin:0">Success</b></p>
+              <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Order ID</span> ${order_id}</p>
+              <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Order ID</span> ${shipment_id}</p>
+              <p style="font-size:14px;margin:0 0 0 0;"><span style="font-weight:bold;display-inline-block;min-width:146px">Order amount</span> Rs. ${body.grandTotal}</p>
+              <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Phone No</span> ${address ? address.phone : body.deliveryAddress.phone}</p>
+              <p style="font-size:14px;margin:0 0 0 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Shipping Address</span>${address.shipping + ", " + address.city + ", " + address.states}</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="height:20px;"></td>
+          </tr>
+          <tr>
+            <td colspan="2" style="font-size:14px;padding:2px;font-weight: bold;">Items</td>
+          </tr>
+          ${body.product.map(function (item) {
+      return `
               <tr style="border:solid 1px #ddd;">
                 <td style="padding:2px;width:50%;">
-                  <p style="font-size:14px;margin:0;"><img src=${item.thumbnail
-            } alt=${item.Name} height="50px"/></p>
+                  <p style="font-size:14px;margin:0;"><img src=${item.thumbnail} alt=${item.Name} height="50px"/></p>
                 </td>
                 <td style="padding:2px;width:50%;">
                   <p style="font-size:14px;margin:0;">${item.Name}</p>
@@ -428,29 +414,33 @@ module.exports = {
                   <p style="font-size:14px;margin:0;"> Rs.${item.quantity + "*" + item.netPrice + "=" + item.quantity * item.netPrice}</p>
                 </td>
               </tr>
-              `;
-        })
-        .join("")}`;
+            `;
+    }).join("")}
+        </tbody>
+      </table>
+    </body>
+  </html>`;
 
-    const htmlFooter = ` </tbody>
-            <tfooter>
-              <tr>
-              <tr>
-                <td style="height:50px;"></td>
-              </tr>
-              <td colspan="2" style="font-size:14px;padding:2px;">
-                <strong style="display:block;margin:0 0 10px 0;">Regards,</strong>Team codenox<br><br>
-                For any queries please contact us at: <b>codenox.advisor@gmail.com</b>
-              </td>
-              </tr>
-            </tfooter>            
-          </table>
-        </body>       
-        </html>`;
+
+    const htmlFooter = `<tfooter>
+    <tr>
+      <td style="height:50px;"></td>
+    </tr>
+    <tr>
+    <p style="font-size:14px;margin:0 0 6px 0;">If you use a mobile device, you can receive notifications about the delivery of your package and track it from our free <a href="#">Amazon app</a>.</p>
+      <td colspan="2" style="font-size:14px;padding:2px;">
+        <strong style="display:block;margin:0 0 10px 0;">Regards,</strong>Team codenox<br><br>
+        For any queries please contact us at: <b>codenox.advisor@gmail.com</b>
+      </td>
+    </tr>
+  </tfooter>
+  </table>
+  </body>
+  </html>`;
     const totalHtml = htmlHeader + htmlFooter;
     return new Promise((resolve, reject) => {
       try {
-        // db.customer?.findOne({ where: { email: customer.email } }).then((user) => {
+        // db.customer.findOne({ where: { email: customer.email } }).then((user) => {
         //   if (user && user.verify == 1) {
         //     var key = Math.random().toString(36).slice(2);
         //     db.customer
@@ -470,7 +460,7 @@ module.exports = {
         smtpTransport.sendMail(
           {
             from: process.env.MAIL_FROM,
-            to: [customer ? customer.email : deliveryAddress.email , deliveryAddress.email],
+            to: customer ? customer.email : deliveryAddress.email,
             subject:
               "Your NinoByWani Order Confirmation. Please share your feedback",
             html: totalHtml,
@@ -486,10 +476,10 @@ module.exports = {
             return resolve(true);
           }
         );
-        // });
-        // } else {
-        //   reject(new Error("user not valid"));
-        // }
+        //       });
+        //   } else {
+        //     reject(new Error("user not valid"));
+        //   }
         // });
       } catch (err) {
         reject(err);

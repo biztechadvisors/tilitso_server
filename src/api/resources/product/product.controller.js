@@ -180,6 +180,8 @@ module.exports = {
                 shortDesc: variant.shortDesc,
                 stockType: variant.stockType,
                 Available: variant.Available,
+                primaryCamera: variant.primaryCamera,
+                secondaryCamera: variant.secondaryCamera,
               };
             }));
 
@@ -224,7 +226,7 @@ module.exports = {
       } = req.body;
 
       const varients = JSON.parse(productVariants);
-
+      console.log("Variants****", varients)
       const product = await db.product.findOne({
         where: { name: name },
       });
@@ -267,13 +269,15 @@ module.exports = {
               interface: variant.interface,
               memory: variant.memory,
               qty: variant.qty,
-              colorId: colorId,
+              colorId: colorId ? colorId : variant.colorCode,
               discountPer: variant.discountPer,
               discount: variant.discount,
               netPrice: variant.netPrice,
               brandId: brand,
               shortDesc: variant.shortDesc,
-              longDesc: variant.longDesc
+              longDesc: variant.longDesc,
+              primaryCamera: variant.primaryCamera,
+              secondaryCamera: variant.secondaryCamera,
             };
           }));
 
@@ -398,7 +402,6 @@ module.exports = {
     }
   },
 
-
   async getProductForFlash(req, res, next) {
     try {
       const query = {};
@@ -445,6 +448,10 @@ module.exports = {
             discountPer: value.ProductVariants[0]
               ? value.ProductVariants[0].discountPer
               : null,
+            primaryCamera: value.ProductVariants[0].primaryCamera
+              ? value.ProductVariants[0].primaryCamera : null,
+            secondaryCamera: value.ProductVariants[0].secondaryCamera
+              ? value.ProductVariants[0].secondaryCamera : null,
           };
           arrData.push(dataList);
         });
@@ -506,12 +513,14 @@ module.exports = {
         PubilshStatus: PubilshStatus || updatedProduct.PubilshStatus,
         LocalDeiveryCharge: LocalDeiveryCharge || updatedProduct.LocalDeiveryCharge,
         photo: req.file ? req.file.location : updatedProduct.photo,
+
       };
 
       // console.log("updateFields", updatedFields)
 
-      const updatedProductResult = await db.product.update(updatedFields, { where: { id: productId } });
+      await db.product.update(updatedFields, { where: { id: productId } });
 
+      console.log("Variants*****", varients)
       if (varients.length) {
         let code = "PD" + Math.random().toString(36).substr(2, 4);
         let priceEntries = [];
@@ -536,13 +545,15 @@ module.exports = {
             interface: variant.interface ? variant.interface : null,
             qty: variant.qty,
             qtyWarning: variant.qtyWarning,
-            colorId: colorId || variant.colorId,
+            colorId: colorId ? colorId : variant.color,
             discountPer: variant.discountPer,
             discount: variant.discount,
             total: variant.total,
             netPrice: variant.netPrice,
             longDesc: variant.longDesc,
             shortDesc: variant.shortDesc,
+            primaryCamera: variant.primaryCamera,
+            secondaryCamera: variant.secondaryCamera,
           });
         }
 

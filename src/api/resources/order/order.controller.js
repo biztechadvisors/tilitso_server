@@ -355,12 +355,15 @@ module.exports = {
                     req.body,
                     address,
                     order_id,
+                    shipment_id,
                     customer,
                     deliveryAddress,
                     { transaction: t }
                 );
 
-                await addPointsToWallet(customer, grandTotal, usedRwdPoint)
+                if (customer) {
+                    await addPointsToWallet(customer, grandTotal, usedRwdPoint)
+                }
 
                 await t.commit();
 

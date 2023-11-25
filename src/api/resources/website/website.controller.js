@@ -228,6 +228,8 @@ module.exports = {
             productCode: value.ProductVariants[0] ? value.ProductVariants[0].productCode : null,
             badges: 'new',
             colorIds: Array.from(variantColors),
+            Dimensions: value.primaryCamera,
+            Weight: value.secondaryCamera,
           };
           arrData.push(dataList);
         }
@@ -348,6 +350,9 @@ module.exports = {
             colorList: uniqueArr(colorArr),
             Specification: variant.product.ch_specifications,
             memory: variant.memory,
+            Material: variant.interface,
+            Dimensions: variant.primaryCamera,
+            Weight: variant.secondaryCamera,
           })),
           Thumbnail: product ? product.photo : "",
           Photo: imageList ? imageList : [],
@@ -438,6 +443,9 @@ module.exports = {
             WarrantyPeriod: value.WarrantyPeriod,
             HighLightDetail: value.HighLightDetail,
             ShippingDays: value.ShippingDays,
+            Material: value.interface,
+            Dimensions: value.primaryCamera,
+            Weight: value.secondaryCamera,
           };
         });
 
@@ -499,6 +507,9 @@ module.exports = {
             WarrantyPeriod: value.WarrantyPeriod,
             HighLightDetail: value.HighLightDetail,
             ShippingDays: value.ShippingDays,
+            Material: value.ProductVariants[0].interface,
+            Dimensions: value.ProductVariants[0].primaryCamera,
+            Weight: value.ProductVariants[0].secondaryCamera,
           };
         });
 
@@ -656,6 +667,8 @@ module.exports = {
             productCode: value.ProductVariants[0] ? value.ProductVariants[0].productCode : null,
             badges: 'new',
             colorIds: Array.from(variantColors),
+            Dimensions: value.primaryCamera,
+            Weight: value.secondaryCamera,
           };
           arrData.push(dataList);
         }
@@ -1055,6 +1068,8 @@ module.exports = {
             productCode: value.ProductVariants[0] ? value.ProductVariants[0].productCode : null,
             badges: 'new',
             colorIds: Array.from(variantColors),
+            Dimensions: value.primaryCamera,
+            Weight: value.secondaryCamera,
           };
           arrData.push(dataList);
         }
@@ -1299,6 +1314,8 @@ module.exports = {
             productCode: value.ProductVariants[0] ? value.ProductVariants[0].productCode : null,
             badges: 'new',
             colorIds: Array.from(variantColors),
+            Dimensions: value.ProductVariants[0].primaryCamera,
+            Weight: value.ProductVariants[0].secondaryCamera,
           };
           arrData.push(dataList);
         }
@@ -1564,6 +1581,8 @@ module.exports = {
             productCode: value.ProductVariants[0] ? value.ProductVariants[0].productCode : null,
             badges: 'new',
             colorIds: Array.from(variantColors),
+            Dimensions: value.primaryCamera,
+            Weight: value.secondaryCamera,
           };
           arrData.push(dataList);
         }
