@@ -518,7 +518,6 @@ module.exports = {
     async getAllOrderListById(req, res, next) {
         try {
             db.Order.findAll({
-                attributes: ["id", "number", "grandtotal"],
                 where: { custId: req.body.id },
                 order: [['createdAt', 'DESC']],
                 include: [

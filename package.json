@@ -51,6 +51,7 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "razorpay": "^2.9.2",
+    "redis": "^4.6.11",
     "rotating-file-stream": "^3.1.1",
     "sequelize": "^6.32.1",
     "sha1": "^1.1.1",

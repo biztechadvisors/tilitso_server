@@ -350,9 +350,9 @@ module.exports = {
             colorList: uniqueArr(colorArr),
             Specification: variant.product.ch_specifications,
             memory: variant.memory,
-            Material: variant.interface,
             Dimensions: variant.primaryCamera,
             Weight: variant.secondaryCamera,
+            interface: variant.interface,
           })),
           Thumbnail: product ? product.photo : "",
           Photo: imageList ? imageList : [],
@@ -1581,8 +1581,9 @@ module.exports = {
             productCode: value.ProductVariants[0] ? value.ProductVariants[0].productCode : null,
             badges: 'new',
             colorIds: Array.from(variantColors),
-            Dimensions: value.primaryCamera,
-            Weight: value.secondaryCamera,
+            Dimensions: value.ProductVariants[0].primaryCamera,
+            Weight: value.ProductVariants[0].secondaryCamera,
+            interface: value.ProductVariants[0].interface,
           };
           arrData.push(dataList);
         }
