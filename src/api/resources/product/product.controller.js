@@ -73,6 +73,7 @@ module.exports = {
             HighLightDetail,
             ShippingDays,
             PubilshStatus,
+            LocalDeiveryCharge,
           } = productData;
 
           // Fetch category ID based on category name
@@ -111,6 +112,7 @@ module.exports = {
                 photo: req.file ? req.file.location : product.photo,
                 HighLightDetail: HighLightDetail,
                 ShippingDays,
+                LocalDeiveryCharge,
                 PubilshStatus,
               },
               { where: { id: product.id }, transaction: t }
@@ -133,6 +135,7 @@ module.exports = {
                 photo: req.file ? req.file.location : null,
                 HighLightDetail: HighLightDetail,
                 ShippingDays,
+                LocalDeiveryCharge,
                 PubilshStatus,
               },
               { transaction: t }
@@ -223,6 +226,8 @@ module.exports = {
         status,
         productVariants,
         desc,
+        LocalDeiveryCharge,
+        ShippingDays
       } = req.body;
 
       const varients = JSON.parse(productVariants);
@@ -245,6 +250,8 @@ module.exports = {
               brandId: brand,
               desc: desc,
               photo: req.file ? req.file.location : "",
+              LocalDeiveryCharge: LocalDeiveryCharge,
+              ShippingDays: ShippingDays
             },
             { transaction: t }
           );

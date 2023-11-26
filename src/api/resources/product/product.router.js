@@ -17,17 +17,14 @@ productRouter.route('/uploadPro').post(
 productRouter.route('/getAllproduct').get(productController.index);
 
 productRouter.route('/getAllproductList').post(
-
   productController.getAllProductList
 );
 
 productRouter.route('/search/getAllproductList').get(
-
   productController.searchAllProductList
 );
 
 productRouter.route('/update').post(
-
   upload.single('photo'),
   productController.update
 );
@@ -53,17 +50,14 @@ productRouter.route('/getAllProductOffer').get(
 );
 
 productRouter.route('/delete').delete(
-
   productController.productDelete
 );
 
 productRouter.route('/deleteOfferById/:id').get(
-
   productController.productOfferDelete
 );
 
 productRouter.route('/upload-img').post(
-
   upload.array('file', 10),
   productController.multiplePhotoUpload
 );
@@ -82,17 +76,14 @@ productRouter.route('/getAllPhotoById').post(
 );
 
 productRouter.route('/slider-photo/delete').delete(
-
   productController.deleteSliderPhoto
 );
 
 productRouter.route('/varients-delete').delete(
-
   productController.productVarients
 );
 
 productRouter.route('/main-delete').delete(
-
   productController.deleteMainProduct
 );
 
@@ -117,23 +108,19 @@ productRouter.route('/filtersortby').post(
 );
 
 productRouter.route('/status/update').post(
-
   productController.statusUpdate
 );
 
 productRouter.route('/update-stock').post(
-
   productController.stockUpdate
 );
 
 productRouter.route('/banner-upload').post(
-
   upload.single('banner'),
   productController.bannerUpload
 );
 
 productRouter.route('/admin/banner-list').get(
-
   productController.bannerAdminList
 );
 
@@ -142,12 +129,10 @@ productRouter.route('/banner-list').get(
 );
 
 productRouter.route('/banner-status').post(
-
   productController.bannerStatus
 );
 
 productRouter.route('/aws/delete/photo').post(
-
   productController.awsProductPhotoDelete
 );
 
@@ -156,54 +141,44 @@ productRouter.route('/website/relatedProduct').post(
 );
 
 productRouter.route('/banner-delete').post(
-
   productController.bannerListDelete
 );
 
 productRouter.route('/seo-create').post(
-
   productController.seoDetailsList
 );
 
 productRouter.route('/color/create').post(
   upload.single('thumbnail'),
-
   productController.createColorDetails
 );
 
 productRouter.route('/color-update').post(
   upload.single('thumbnail'),
-
   productController.updateColorDetails
 );
 
 productRouter.route('/color/list').post(
-
   productController.getColorList
 );
 
 productRouter.route('/color/delete').delete(
-
   productController.deleteColorById
 );
 
 productRouter.route('/color/list').get(
-
   productController.productColourList
 );
 
 productRouter.route('/getAllList').get(
-
   productController.getProductForFlash
 );
 
 productRouter.route('/tag').get(
-
   productController.getTag
 );
 
 productRouter.route('/tag').delete(
-
   productController.getDeleteTag
 );
 
