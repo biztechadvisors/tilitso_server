@@ -915,6 +915,7 @@ module.exports = {
 
     async getAllOrderGraph(req, res, next) {
         try {
+            // const { filter } = req.params;
             const arrData = [];
             const query = {
                 where: {},
