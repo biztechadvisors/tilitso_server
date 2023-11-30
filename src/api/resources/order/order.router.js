@@ -59,5 +59,4 @@ orderRouter.route('/OrderMatrix').post(orderController.getAllOrderGraph)
 
 orderRouter.route('/getAllOrderInfo').get(orderController.getAllOrderInfo)
 
-
 module.exports = orderRouter;

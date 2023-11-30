@@ -55,40 +55,45 @@ module.exports = {
     var passwordHash = bcrypt.hashSync(password);
     var token = generateOtp();
     var otp = verifyOtp(token);
-    db.user
-      .findOne({ where: { email: email, role: role }, paranoid: false })
-      .then((find) => {
-        if (find) {
-          throw new RequestError("Email is already in use", 409);
-        }
-        return db.user.create({
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          phoneNo: phoneNo,
-          address: address,
-          password: passwordHash,
-          verify: verify,
-          role: role,
-        });
-      })
-      .then((user) => {
-        if (user) {
-          mailer.sendEmployeePassword(email, token);
-          return res.status(200).json({
-            success: true,
-            key: otp,
-            message:
-              "New Registration added and password has been sent to " +
-              email +
-              " .",
-          });
-        } else res.status(500).json({ success: false });
-      })
-      .catch((err) => {
-        console.log(err);
-        next(err);
+
+    try {
+      const find = await db.user.findOne({
+        where: { email: email, role: role },
+        paranoid: false,
       });
+
+      if (find) {
+        throw new RequestError("Email is already in use", 409);
+      }
+
+      const user = await db.user.create({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phoneNo: phoneNo,
+        address: address,
+        password: passwordHash,
+        verify: verify,
+        role: role,
+      });
+
+      if (user) {
+        mailer.sendEmployeePassword(email, token);
+        return res.status(200).json({
+          success: true,
+          key: otp,
+          message:
+            "New Registration added and password has been sent to " +
+            email +
+            ".",
+        });
+      } else {
+        res.status(500).json({ success: false });
+      }
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
   },
 
   async findUser(req, res, next) {

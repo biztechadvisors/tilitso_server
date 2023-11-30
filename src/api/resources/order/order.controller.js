@@ -334,7 +334,7 @@ module.exports = {
                         orderId: order.id,
                         custId: customer ? customer.id : null,
                         addressId: address ? address.id : parseInt(deliveryId),
-                        productId: product ? product.id : "",
+                        productId: product ? product.id : product.productId,
                         varientId: product ? product.variantId : "",
                         qty: product ? product.quantity : "",
                     };
@@ -358,6 +358,7 @@ module.exports = {
                     shipment_id,
                     customer,
                     deliveryAddress,
+                    paymentMethod,
                     { transaction: t }
                 );
 
@@ -519,6 +520,7 @@ module.exports = {
         try {
             db.Order.findAll({
                 where: { custId: req.body.id },
+                attributes: ["id", "paymentmethod", "number", "grandtotal", "createdAt", "shipment_id", "order_Id"],
                 order: [['createdAt', 'DESC']],
                 include: [
                     {
@@ -1112,7 +1114,6 @@ module.exports = {
             res.status(500).json({ errors: "" + err });
         }
     },
-
 
 
     // async getAllOrderList(req, res, next) {

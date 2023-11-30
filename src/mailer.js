@@ -23,16 +23,16 @@ module.exports = {
               {
                 from: process.env.MAIL_FROM,
                 to: email,
-                subject: "NinoByVani: OTP for Verify Email",
+                subject: "Tilitso: OTP for Verify Email",
                 html:
-                  "Dear user,<br><br> Thank you for registering with Nino.<br> <br> <b> <strong>One Time OTP:</strong> " +
+                  "Dear user,<br><br> Thank you for registering with Tilitso.<br> <br> <b> <strong>One Time OTP:</strong> " +
                   otp +
-                  " </b><br> <br> This link will expire in 30sec. <br> This is a system generated mail. Please do not reply to this email ID.<br>Warm Regards,<br> Customer Care<br> Nino",
+                  " </b><br> <br> This link will expire in 2 minute. <br> This is a system generated mail. Please do not reply to this email ID.<br>Warm Regards,<br> Customer Care<br> Tilitso",
               },
               function (error, info) {
                 if (error) {
                   return reject({
-                    name: "NinoByVaniException",
+                    name: "TilitsoException",
                     message: "Email Sending Failed",
                     error: error,
                   });
@@ -42,7 +42,7 @@ module.exports = {
             );
           } else
             throw {
-              name: "NinoByVaniException",
+              name: "TilitsoException",
               msg: "Email Body not available",
             };
         });
@@ -152,7 +152,7 @@ module.exports = {
             });
 
             var encryptEmail = CryptoJS.AES.encrypt(email, 'TEDbuddyIndsFia').toString();
-            const link = `https://nino-seven.vercel.app/page-create-password?email=${encodeURIComponent(encryptEmail)}`
+            const link = `https://tilitso.in/page-create-password?email=${encodeURIComponent(encryptEmail)}`
 
             const emailContent = `
     <html>
@@ -182,17 +182,17 @@ module.exports = {
     </head>
     <body>
         <div class="email-container">
-            <h2>NinoByVani: Reset Password</h2>
+            <h2>Tilitso: Reset Password</h2>
             <p>Dear user,</p>
-            <p>Thank you for resetting your password with NinoByVani.</p>
+            <p>Thank you for resetting your password with Tilitso.</p>
             
             <p>Click on the following link to create a new password:</p>
             <p><a class="link" href="${link}">Create New Password</a></p>
             
-            <p>This link will expire in 30 seconds.</p>
+            <p>This link will expire in 2 minute.</p>
             <p class="footer">This is a system-generated email. Please do not reply to this email ID.</p>
             
-            <p class="footer">Warm Regards,<br>Customer Care<br>NinoByVani</p>
+            <p class="footer">Warm Regards,<br>Customer Care<br>Tilitso</p>
         </div>
     </body>
     </html>
@@ -201,13 +201,13 @@ module.exports = {
               {
                 from: process.env.MAIL_FROM,
                 to: email,
-                subject: "NinoByVani: Reset Password",
+                subject: "Tilitso: Reset Password",
                 html: emailContent,
               },
               function (error, info) {
                 if (error) {
                   return reject({
-                    name: "NinoByVaniException",
+                    name: "TilitsoException",
                     message: "Email Sending Failed",
                     error: error,
                   });
@@ -217,7 +217,7 @@ module.exports = {
             );
           } else
             throw {
-              name: "NinoByVaniException",
+              name: "TilitsoException",
               msg: "Email Body not available",
             };
         });
@@ -304,8 +304,8 @@ module.exports = {
                 <td style="height:50px;"></td>
               </tr>
               <td colspan="2" style="font-size:14px;padding:2px;">
-                <strong style="display:block;margin:0 0 10px 0;">Regards,</strong>Team NinobyVani<br><br>
-                For any queries please contact us at: <b>support@ninobyvani.com</b>
+                <strong style="display:block;margin:0 0 10px 0;">Regards,</strong>Team Tilitso<br><br>
+                For any queries please contact us at: <b>support@Tilitso.com</b>
               </td>
               </tr>
             </tfooter>
@@ -338,7 +338,7 @@ module.exports = {
                     from: process.env.MAIL_FROM,
                     to: user.email,
                     subject:
-                      "Your NinobyVani Order Confirmation. Please share your feedback",
+                      "Your Tilitso Order Confirmation. Please share your feedback",
                     html: totalHtml,
                   },
                   function (error, info) {
@@ -369,7 +369,7 @@ module.exports = {
       <table style="min-width:650px;margin:50px auto 10px;background-color:#fff;padding:50px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);-moz-box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24); border-top: solid 10px #88b433;">
         <thead>
           <tr>
-            <th style="text-align:left;"><img style="max-width: 80px;height:70px" src="https://nino-orpin.vercel.app/" width='80' alt="codenox"></th>
+            <th style="text-align:left;"><img style="max-width: 80px;height:70px" src="https://tilitso.in/" width='80' alt="codenox"></th>
             <th style="text-align:right;font-weight:bold;font-size: 14px;">${new Date().toISOString().slice(0, 10)}</th>
           </tr>
         </thead>
@@ -389,7 +389,7 @@ module.exports = {
             <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
               <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:150px">Order status</span><b style="color:green;font-weight:normal;margin:0">Success</b></p>
               <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Order ID</span> ${order_id}</p>
-              <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Order ID</span> ${shipment_id}</p>
+              <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Shipment ID</span> ${shipment_id}</p>
               <p style="font-size:14px;margin:0 0 0 0;"><span style="font-weight:bold;display-inline-block;min-width:146px">Order amount</span> Rs. ${body.grandTotal}</p>
               <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Phone No</span> ${address ? address.phone : body.deliveryAddress.phone}</p>
               <p style="font-size:14px;margin:0 0 0 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Shipping Address</span>${address.shipping + ", " + address.city + ", " + address.states}</p>
@@ -413,9 +413,13 @@ module.exports = {
                 <td style="padding:2px;width:50%;text-align: right;">
                   <p style="font-size:14px;margin:0;"> Rs.${item.quantity + "*" + item.netPrice + "=" + item.quantity * item.netPrice}</p>
                 </td>
+                
               </tr>
             `;
     }).join("")}
+              <td style="padding:2px;width:50%;text-align: right;">
+                <p style="font-size:14px;margin:0;">Discount ${" "}= Rs.${body.total_discount}</p>
+              </td>
         </tbody>
       </table>
     </body>
@@ -427,10 +431,10 @@ module.exports = {
       <td style="height:50px;"></td>
     </tr>
     <tr>
-    <p style="font-size:14px;margin:0 0 6px 0;">If you use a mobile device, you can receive notifications about the delivery of your package and track it from our free <a href="#">Amazon app</a>.</p>
+    <p style="font-size:14px;margin:0 0 6px 0;">If you use a mobile device, you can receive notifications about the delivery of your package and track it from our free <a href="#">Tilitso app</a>.</p>
       <td colspan="2" style="font-size:14px;padding:2px;">
-        <strong style="display:block;margin:0 0 10px 0;">Regards,</strong>Team codenox<br><br>
-        For any queries please contact us at: <b>codenox.advisor@gmail.com</b>
+        <strong style="display:block;margin:0 0 10px 0;">Regards,</strong>Team Tilitso<br><br>
+        For any queries please contact us at: <b>tilitso.in@gmail.com</b>
       </td>
     </tr>
   </tfooter>
@@ -462,7 +466,7 @@ module.exports = {
             from: process.env.MAIL_FROM,
             to: customer ? customer.email : deliveryAddress.email,
             subject:
-              "Your NinoByWani Order Confirmation. Please share your feedback",
+              "Your Tilitso Order Confirmation. Please share your feedback",
             html: totalHtml,
           },
           function (error, info) {
