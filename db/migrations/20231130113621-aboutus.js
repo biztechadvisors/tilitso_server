@@ -22,8 +22,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       status: {
-        type: Sequelize.BOOLEAN,
-        unique: true
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

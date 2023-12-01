@@ -10,22 +10,6 @@ module.exports = (sequelize, DataTypes) => {
             slug: DataTypes.STRING,
             status: {
                 type: DataTypes.BOOLEAN,
-                validate: {
-                    isUnique: async function (value, next) {
-                        let existing = await PrivacyPolicy.findOne({
-                            where: {
-                                status: true,
-                                id: {
-                                    [Op.ne]: this.id
-                                }
-                            }
-                        });
-                        if (existing) {
-                            return next('Only one row can have status true');
-                        }
-                        return next();
-                    }
-                }
             }
         },
         {}
