@@ -1,30 +1,30 @@
 const { db } = require('../../../models');
-const AWS = require('aws-sdk');
+// const AWS = require('aws-sdk');
 
 
-const s3 = new AWS.S3({
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_KEY,
-  });
+// const s3 = new AWS.S3({
+//     accessKeyId: process.env.AWS_ACCESS_KEY,
+//     secretAccessKey: process.env.AWS_SECRET_KEY,
+//   });
   
-  let deleteFileFromS3 = async (imgUrl) => {
-    try {
-      const lastItem = imgUrl.substring(imgUrl.lastIndexOf('/') + 1);
-      let params = {
-        Bucket: 'ninocodenox',
-        Key: lastItem,
-      };
-      s3.deleteObject(params, (error, data) => {
-        if (error) {
-          console.log(error, error.stack);
-        }
-        return data;
-      });
-    } catch (error) {
-      assert.isNotOk(error, 'Promise error');
-      done();
-    }
-  };
+  // let deleteFileFromS3 = async (imgUrl) => {
+  //   try {
+  //     const lastItem = imgUrl.substring(imgUrl.lastIndexOf('/') + 1);
+  //     let params = {
+  //       Bucket: 'ninocodenox',
+  //       Key: lastItem,
+  //     };
+  //     s3.deleteObject(params, (error, data) => {
+  //       if (error) {
+  //         console.log(error, error.stack);
+  //       }
+  //       return data;
+  //     });
+  //   } catch (error) {
+  //     assert.isNotOk(error, 'Promise error');
+  //     done();
+  //   }
+  // };
 
   module.exports = {
     async addAbout(req,res,next){
@@ -52,7 +52,7 @@ const s3 = new AWS.S3({
             let AboutDataArray = []
             const aboutUs = await db.AboutUs.findAll();
             for(const data of aboutUs){
-                const{id,title,banner,content,status,slug} = data
+                const{id,title,banner,content,status,slug,createdAt,updatedAt} = data
                
                 AboutData = {
                     id:id,
@@ -61,6 +61,8 @@ const s3 = new AWS.S3({
                     content:content,
                     banner:banner,
                     status:status,
+                    createdAt:createdAt,
+                    updatedAt:updatedAt
                 }
                 AboutDataArray.push(AboutData);
             }

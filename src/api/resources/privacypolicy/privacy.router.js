@@ -9,4 +9,20 @@ privacyRouter.route('/insert').post(
     privacyController.AddPrivacy
   );
 
+  privacyRouter.route('/getPrivacy').get(
+    privacyController.GetPrivacy
+);
+
+privacyRouter.route('/getPrivacySlug').get(
+    privacyController.GetPrivacySlug
+);
+
+privacyRouter.route('/updatePrivacy').post(
+    upload.single('photo'),
+    privacyController.UpdatePrivacy
+);
+
+privacyRouter.route('/deletePrivacy').delete(
+    privacyController.DeletePrivacy
+);
 module.exports = privacyRouter;
