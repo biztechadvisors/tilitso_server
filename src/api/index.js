@@ -37,7 +37,6 @@ restRouter.use("/other", otherRouter);
 restRouter.use("/blog", blogRouter);
 restRouter.use("/attribute", attributeRouter);
 
-
 // Define and import findVendorWithLowestPrice function
 const { findVendorWithLowestPrice } = require("../utils");
 

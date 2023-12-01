@@ -227,11 +227,10 @@ module.exports = {
         productVariants,
         desc,
         LocalDeiveryCharge,
-        ShippingDays
+        ShippingDays,
       } = req.body;
 
       const varients = JSON.parse(productVariants);
-      console.log("Variants****", varients)
       const product = await db.product.findOne({
         where: { name: name },
       });
@@ -264,7 +263,7 @@ module.exports = {
             const colorId = color ? color.id : null; // Use the retrieved color ID or null if it is not defined
 
             let slug = convertToSlug(variant.productName)
-
+            console.log("Attribute****", variant.attribute)
             return {
               productId: productCreated.id,
               productName: variant.productName,
@@ -273,18 +272,18 @@ module.exports = {
                 ? variant.productCode
                 : `PD${Math.random().toString(36).substr(2, 4)}`,
               actualPrice: variant.actualPrice,
-              interface: variant.interface,
-              memory: variant.memory,
+              interface: variant.attribute.Material,
+              memory: variant.attribute.Size,
               qty: variant.qty,
-              colorId: colorId ? colorId : variant.colorCode,
+              colorId: variant.attribute.Color,
               discountPer: variant.discountPer,
               discount: variant.discount,
               netPrice: variant.netPrice,
               brandId: brand,
-              shortDesc: variant.shortDesc,
-              longDesc: variant.longDesc,
-              primaryCamera: variant.primaryCamera,
-              secondaryCamera: variant.secondaryCamera,
+              // shortDesc: variant.shortDesc,
+              // longDesc: variant.longDesc,
+              primaryCamera: variant.attribute.ProductDimensions,
+              secondaryCamera: variant.attribute.Weight,
             };
           }));
 

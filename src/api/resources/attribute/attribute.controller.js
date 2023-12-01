@@ -71,7 +71,6 @@ module.exports = {
 
   async createAttributeValues(req, res, next) {
     try {
-      console.log("Body", req.body)
       const { value, meta, attribute_id } = req.body;
 
       const list = await db.AttributeValue.findOne({ where: { value: value } });
@@ -119,7 +118,7 @@ module.exports = {
 
   async getAttribute(req, res, next) {
     const { id, slug } = req.query;
-
+    console.log("first", id, slug)
     try {
       let attribute = {};
       if (id || slug) {
