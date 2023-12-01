@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable('PrivacyPolicy', {
+    return queryInterface.createTable('PrivacyPolicies', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -38,7 +38,7 @@ module.exports = {
   ,
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('PrivacyPolicy');
+    return queryInterface.dropTable('PrivacyPolicies');
   }
 
 };
