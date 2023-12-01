@@ -1,21 +1,19 @@
 "use strict";
 const { Op } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-    const PrivacyPolicy = sequelize.define(
-        "PrivacyPolicy",
+    const PrivacyPolicies = sequelize.define(
+        "PrivacyPolicies",
         {
             banner: DataTypes.TEXT,
             title: DataTypes.STRING,
             content: DataTypes.STRING,
             slug: DataTypes.STRING,
-            status: {
-                type: DataTypes.BOOLEAN,
-            }
+            status: DataTypes.BOOLEAN,
         },
         {}
     );
-    PrivacyPolicy.associate = function (models) {
+    PrivacyPolicies.associate = function (models) {
         // associations can be defined here
     };
-    return PrivacyPolicy;
+    return PrivacyPolicies;
 };

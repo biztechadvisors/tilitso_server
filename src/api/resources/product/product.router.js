@@ -182,20 +182,4 @@ productRouter.route('/tag').delete(
   productController.getDeleteTag
 );
 
-productRouter.route('/attributeAdd').post(
-  productController.createAttribute
-);
-
-productRouter.route('/attributeValuesAdd').post(
-  productController.createAttributeValues);
-
-productRouter.route('/getAllAttribute').get(
-  productController.getAllAttribute);
-
-productRouter.route('/getDeleteAttributeValue').delete(
-  productController.getDeleteAttributeValue);
-
-productRouter.route('/getDeleteAttribute').delete(
-  productController.getDeleteAttribute);
-
 module.exports = productRouter;
