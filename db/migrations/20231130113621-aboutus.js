@@ -23,7 +23,6 @@ module.exports = {
       },
       status: {
         type: Sequelize.BOOLEAN,
-        unique: true
       },
       createdAt: {
         allowNull: false,

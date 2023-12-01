@@ -8,25 +8,7 @@ module.exports = (sequelize, DataTypes) => {
             title: DataTypes.STRING,
             content: DataTypes.STRING,
             slug: DataTypes.STRING,
-            status: {
-                type: DataTypes.BOOLEAN,
-                validate: {
-                    isUnique: async function (value, next) {
-                        let aboutUs = await AboutUs.findOne({
-                            where: {
-                                status: true,
-                                id: {
-                                    [Op.ne]: this.id
-                                }
-                            }
-                        });
-                        if (aboutUs) {
-                            return next('Only one row can have status true');
-                        }
-                        return next();
-                    }
-                }
-            }
+            status: DataTypes.BOOLEAN,
         },
         {}
     );
