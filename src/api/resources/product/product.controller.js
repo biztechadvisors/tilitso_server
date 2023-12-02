@@ -250,14 +250,9 @@ module.exports = {
           );
 
           const priceEntries = await Promise.all(varients.map(async (variant) => {
-            let color = null;
-            if (variant.colorCode) {
-              color = await db.ch_color_detail.findOne({ where: { TITLE: variant.colorCode } }).catch(() => null);
-            }
-            const colorId = color ? color.id : null; // Use the retrieved color ID or null if it is not defined
 
-            let slug = convertToSlug(variant.productName)
-            console.log("Attribute****", variant.attribute)
+            const slug = convertToSlug(variant.productName)
+
             return {
               productId: productCreated.id,
               productName: variant.productName,
@@ -274,8 +269,6 @@ module.exports = {
               discount: variant.discount,
               netPrice: variant.netPrice,
               brandId: brand,
-              // shortDesc: variant.shortDesc,
-              // longDesc: variant.longDesc,
               primaryCamera: variant.attribute.ProductDimensions,
               secondaryCamera: variant.attribute.Weight,
             };
@@ -525,10 +518,13 @@ module.exports = {
         let priceEntries = [];
 
         for (let i = 0; i < varients.length; i++) {
+
+          const slug = convertToSlug(variant.productName)
           let variant = varients[i];
 
           priceEntries.push({
             productId: productId,
+            slug: slug,
             id: variant.id,
             productName: variant.productName,
             productCode: variant.productCode ? variant.productCode : code,

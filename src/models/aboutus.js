@@ -8,7 +8,9 @@ module.exports = (sequelize, DataTypes) => {
             title: DataTypes.STRING,
             content: DataTypes.STRING,
             slug: DataTypes.STRING,
-            status: DataTypes.BOOLEAN,
+            status: {
+                type: DataTypes.BOOLEAN,
+            }
         },
         {}
     );

@@ -15,8 +15,12 @@ const abandonedCartsRouter = require("./resources/abandonedCart");
 const paymentRouter = require("./resources/payment");
 const couponDiscountRouter = require("./resources/couponDiscount");
 const otherRouter = require("./resources/other")
-const blogRouter = require("./resources/blog")
-const attributeRouter = require("./resources/attribute")
+const faqRouter = require("./resources/faq");
+const privacyRouter = require("./resources/privacypolicy");
+const aboutRouter = require("./resources/aboutus");
+const blogRouter = require("./resources/blog");
+const attributeRouter = require("./resources/attribute");
+
 const restRouter = express.Router();
 restRouter.use("/auth", authRouter);
 restRouter.use("/customer", customerRouter);
@@ -34,8 +38,11 @@ restRouter.use("/carts", abandonedCartsRouter);
 restRouter.use("/payment", paymentRouter);
 restRouter.use("/couponDiscount", couponDiscountRouter);
 restRouter.use("/other", otherRouter);
-restRouter.use("/blog", blogRouter);
-restRouter.use("/attribute", attributeRouter);
+restRouter.use("/faq", faqRouter);
+restRouter.use("/privacyPolicy", privacyRouter);
+restRouter.use("/aboutUs", aboutRouter)
+restRouter.use("/blog", blogRouter)
+restRouter.use("/attribute", attributeRouter)
 
 // Define and import findVendorWithLowestPrice function
 const { findVendorWithLowestPrice } = require("../utils");

@@ -43,6 +43,9 @@ module.exports = {
   async create(req, res, next) {
     const { title, desc, content, status } = req.body;
 
+    console.log("blog-Data", req.body)
+    console.log("blog-Image", req.file.location)
+
     const slug = convertToSlug(title)
     db.Blog
       .create({
@@ -50,7 +53,7 @@ module.exports = {
         desc: desc,
         slug: slug,
         status: status,
-        image: req.file ? req.file.location : "",
+        banner: req.file.location ? req.file.location : "",
         content: content
       })
       .then((success) => {
@@ -129,8 +132,8 @@ module.exports = {
   },
 
   async deleteBlog(req, res, next) {
-    const { id, image } = req.body;
-    deleteFileFromS3(image)
+    const { id, banner } = req.body;
+    deleteFileFromS3(banner)
       .then((data) => {
         if (!data) {
           return db.Blog.destroy({ where: { id: id } });
