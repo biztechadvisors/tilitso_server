@@ -1,30 +1,4 @@
 const { db } = require('../../../models');
-// const AWS = require('aws-sdk');
-
-
-// const s3 = new AWS.S3({
-//     accessKeyId: process.env.AWS_ACCESS_KEY,
-//     secretAccessKey: process.env.AWS_SECRET_KEY,
-//   });
-  
-  // let deleteFileFromS3 = async (imgUrl) => {
-  //   try {
-  //     const lastItem = imgUrl.substring(imgUrl.lastIndexOf('/') + 1);
-  //     let params = {
-  //       Bucket: 'ninocodenox',
-  //       Key: lastItem,
-  //     };
-  //     s3.deleteObject(params, (error, data) => {
-  //       if (error) {
-  //         console.log(error, error.stack);
-  //       }
-  //       return data;
-  //     });
-  //   } catch (error) {
-  //     assert.isNotOk(error, 'Promise error');
-  //     done();
-  //   }
-  // };
 
   module.exports = {
     async addAbout(req,res,next){
@@ -162,6 +136,5 @@ const { db } = require('../../../models');
           } catch (err) {
             next(err);
           }
-    }
-    
+    },
   }

@@ -30,19 +30,25 @@ module.exports = {
 
     async GetFaq(req,res,next){
         try{
+            // console.log("first")
             let faqDataArray = []
             const faqs = await db.Faq.findAll();
             for(const data of faqs){
                 const{id,question,answer,categoryId , subCategoryId} = data
                 let category = await db.category.findOne({ where: { id: categoryId }});
-                    if (!category) {
-                    categoryId = null
-                    }
+                    // if (!category) {
+                    //     console.log("category")
+                    // categoryId = null
+                    // }
+
 
                 let subcategory = await db.SubCategory.findOne({ where: { id: subCategoryId } });
-                    if (!subcategory) {
-                        subcategory = null
-                    }
+                    // if (!subcategory) {
+                    //     console.log("subcategory")
+
+
+                    //     subcategory = null
+                    // }
                 // console.log(subcategory)
                 faqData = {
                     id:id,
@@ -51,12 +57,16 @@ module.exports = {
                     category:category,
                     subCategoryId:subcategory
                 }
+                // console.log("data",faqData)
                 faqDataArray.push(faqData);
+                // console.log("check-error",faqDataArray)
             }
 
-            console.log(faqData.category.id)
 
-            if (faqs.length > 0) {
+            // console.log("faqData--Outer")
+
+
+            if (faqs) {
               return res.status(200).json({ success: true, data: faqDataArray });
             } else {
               return res.status(404).json({ success: false, msg: "No Faq is Here" });
@@ -91,7 +101,7 @@ module.exports = {
                     subCategoryId:subcategory
                 }
 
-            console.log(faqOneData.category.id)
+            // console.log(faqOneData.category.id)
 
             if (faqOne) {
               return res.status(200).json({ success: true, data: faqOneData });
