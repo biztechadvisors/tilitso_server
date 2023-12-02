@@ -147,12 +147,6 @@ module.exports = {
 
           if (Array.isArray(productVariants)) {
             const priceEntries = await Promise.all(productVariants.map(async (variant) => {
-              let color = null;
-
-              if (variant.color) {
-                color = await db.ch_color_detail.findOne({ where: { TITLE: variant.color } }).catch(() => null);
-              }
-              const colorId = color ? color.id : null; // Use the retrieved color ID or null if it is not defined
 
               return {
                 productId: product.id,
@@ -167,7 +161,7 @@ module.exports = {
                 sellerPrice: variant.sellerPrice,
                 unitSize: variant.unitSize,
                 qty: variant.qty,
-                colorId: colorId, // Use the retrieved color ID or null if it is not defined
+                colorId: variant.color,
                 discountPer: variant.discountPer,
                 discount: variant.discount,
                 total: variant.total,
@@ -526,20 +520,12 @@ module.exports = {
 
       await db.product.update(updatedFields, { where: { id: productId } });
 
-      console.log("Variants*****", varients)
       if (varients.length) {
         let code = "PD" + Math.random().toString(36).substr(2, 4);
         let priceEntries = [];
 
         for (let i = 0; i < varients.length; i++) {
           let variant = varients[i];
-
-          let colorId = null;
-          if (variant.color) {
-            const color = await db.ch_color_detail.findOne({ where: { TITLE: variant.color } }).catch(() => null);
-            colorId = color ? color.id : null;
-          }
-          // console.log("colorCode", variant.color, colorId)
 
           priceEntries.push({
             productId: productId,
@@ -551,7 +537,7 @@ module.exports = {
             interface: variant.interface ? variant.interface : null,
             qty: variant.qty,
             qtyWarning: variant.qtyWarning,
-            colorId: colorId ? colorId : variant.color,
+            colorId: variant.colorId,
             discountPer: variant.discountPer,
             discount: variant.discount,
             total: variant.total,

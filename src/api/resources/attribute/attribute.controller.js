@@ -118,7 +118,7 @@ module.exports = {
 
   async getAttribute(req, res, next) {
     const { id, slug } = req.query;
-    console.log("first", id, slug)
+    // console.log("first", id, slug)
     try {
       let attribute = {};
       if (id || slug) {
@@ -127,6 +127,7 @@ module.exports = {
           include: [db.AttributeValue],
         }) || {};
       }
+
       const response = Util.getFormatedResponse(false, attribute, {
         message: 'Success',
       });

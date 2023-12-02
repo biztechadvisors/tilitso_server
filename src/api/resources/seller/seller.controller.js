@@ -1112,14 +1112,7 @@ module.exports = {
           { model: db.SubCategory, attributes: ["id", "sub_name"] },
           {
             model: db.ProductVariant,
-            ...whereCond,
-            include: [
-              {
-                model: db.ch_color_detail,
-                as: "color",
-                attributes: ["id", "TITLE", "CODE"],
-              },
-            ],
+            ...whereCond
           },
           { model: db.ch_specification, attributes: ["id", "type", "value"] },
           {
