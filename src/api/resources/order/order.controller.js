@@ -246,9 +246,9 @@ module.exports = {
             // }
             const t = await db.sequelize.transaction();
             try {
-                const orderId = "OD" + Math.floor(Math.random() * Date.now());
+                const Invoice = "OD" + Math.floor(Math.random() * Date.now());
                 const orderData = {
-                    order_id: orderId,
+                    order_id: Invoice,
                     order_date: new Date().toISOString(),
                     pickup_location: "Primary",
                     channel_id: "",
@@ -353,11 +353,9 @@ module.exports = {
 
                 await mailer.sendInvoiceForCustomerNew(
                     req.body,
-                    address,
+                    Invoice,
                     order_id,
                     shipment_id,
-                    customer,
-                    deliveryAddress,
                     paymentMethod,
                     { transaction: t }
                 );
