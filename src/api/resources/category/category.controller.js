@@ -51,7 +51,9 @@ module.exports = {
 
   async addSubCategory(req, res, next) {
     try {
-      const { categoryId, sub_name, slug, keyword, desc } = req.body;
+      const { categoryId, sub_name, keyword, desc, title } = req.body;
+      const slug = convertToSlug(sub_name)
+
       db.SubCategory.findOne({ where: { sub_name: sub_name } })
         .then((data) => {
           if (data) {
@@ -63,6 +65,8 @@ module.exports = {
             slug: slug,
             keyword: keyword,
             desc: desc,
+            title: title,
+            thumbnail: req.file.location ? req.file.location : "",
           });
         })
         .then((category) => {

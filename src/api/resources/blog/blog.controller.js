@@ -101,7 +101,7 @@ module.exports = {
             title: title,
             desc: desc,
             status: status,
-            image: req.file ? req.file.location : "",
+            image: req.file.location ? req.file.location : "",
             content: content
           });
         }

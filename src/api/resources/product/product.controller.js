@@ -519,8 +519,8 @@ module.exports = {
 
         for (let i = 0; i < varients.length; i++) {
 
-          const slug = convertToSlug(variant.productName)
           let variant = varients[i];
+          const slug = convertToSlug(variant.productName)
 
           priceEntries.push({
             productId: productId,
