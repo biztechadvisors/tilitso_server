@@ -239,7 +239,7 @@ module.exports = {
 
             const customer = await db.customer.findOne({ where: { id: req.body.id ? req.body.id : null } });
 
-            console.log("Ram")
+            console.log("Ram", customer)
 
             // if (!customer) {
             //     return res.status(500).json({ errors: ['User is not found'] });
