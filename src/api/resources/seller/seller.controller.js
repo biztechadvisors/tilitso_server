@@ -1095,6 +1095,7 @@ module.exports = {
       "SellerId",
       "name",
       "photo",
+      "desc",
       "LocalDeiveryCharge",
       "ZonalDeiveryCharge",
       "NationalDeiveryCharge",

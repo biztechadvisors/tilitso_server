@@ -231,30 +231,27 @@ module.exports = {
     },
 
     /* Add user api start here................................*/
-
     async index(req, res, next) {
+
         try {
             const { razorpay_payment_id, paymentMethod, deliveryAddress, grandTotal, deliveryId, total_discount, shipping_charges, usedRwdPoint } = req.body;
             const productList = req.body.product;
-
             const customer = await db.customer.findOne({ where: { id: req.body.id ? req.body.id : null } });
-
-            console.log("Ram", customer)
-
+            console.log("Ram")
             // if (!customer) {
             //     return res.status(500).json({ errors: ['User is not found'] });
             // }
             const t = await db.sequelize.transaction();
             try {
-                const Invoice = "OD" + Math.floor(Math.random() * Date.now());
+                const orderId = "OD" + Math.floor(Math.random() * Date.now());
                 const orderData = {
-                    order_id: Invoice,
+                    order_id: orderId,
                     order_date: new Date().toISOString(),
                     pickup_location: "Primary",
                     channel_id: "",
                     comment: "",
                     billing_customer_name: deliveryAddress.name,
-                    billing_last_name: deliveryAddress.lastName,
+                    billing_last_name: deliveryAddress.lastName ? deliveryAddress.lastName : '',
                     billing_address: deliveryAddress.StreetAddress,
                     billing_address_2: deliveryAddress.ShippingAddress,
                     billing_city: deliveryAddress.city,
@@ -265,7 +262,7 @@ module.exports = {
                     billing_phone: deliveryAddress.phone,
                     shipping_is_billing: deliveryAddress.shipping_is_billing,
                     shipping_customer_name: deliveryAddress.name2 ? deliveryAddress.name2 : deliveryAddress.name,
-                    shipping_last_name: deliveryAddress.lastName2 ? deliveryAddress.lastName2 : deliveryAddress.lastName,
+                    shipping_last_name: deliveryAddress.lastName2 ? deliveryAddress.lastName2 : (deliveryAddress.lastName ? deliveryAddress.lastName : ''),
                     shipping_address: deliveryAddress.StreetAddress2 ? deliveryAddress.StreetAddress2 : deliveryAddress.StreetAddress,
                     shipping_address_2: deliveryAddress.ShippingAddress2 ? deliveryAddress.ShippingAddress2 : deliveryAddress.ShippingAddress,
                     shipping_city: deliveryAddress.city2 ? deliveryAddress.city2 : deliveryAddress.city,
@@ -340,8 +337,6 @@ module.exports = {
                     };
                 });
 
-                // console.log("cartEntries");
-
                 if (cartEntries.length > 0) {
                     await db.Cart_Detail.bulkCreate(cartEntries, { transaction: t });
                 }
@@ -353,9 +348,11 @@ module.exports = {
 
                 await mailer.sendInvoiceForCustomerNew(
                     req.body,
-                    Invoice,
+                    address,
                     order_id,
                     shipment_id,
+                    customer,
+                    deliveryAddress,
                     paymentMethod,
                     { transaction: t }
                 );
@@ -363,9 +360,7 @@ module.exports = {
                 if (customer) {
                     await addPointsToWallet(customer, grandTotal, usedRwdPoint)
                 }
-
                 await t.commit();
-
                 res.status(200).json({ success: true, shiprocketResponse });
             } catch (err) {
                 console.log(err);
@@ -376,6 +371,7 @@ module.exports = {
             next(err); // Pass the error to the error handler middleware
         }
     },
+
 
     async getAllOrderList(req, res, next) {
         try {
