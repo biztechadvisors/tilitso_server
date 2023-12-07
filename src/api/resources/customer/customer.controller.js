@@ -225,18 +225,14 @@ module.exports = {
   // ********************************
   async sendReset(req, res, next) {
     const { email } = req.body;
-
     try {
       const customer = await db.customer.findOne({
         where: {
           email: email,
         },
       });
-
       if (customer) {
-
         await mailer.sendResetPassword(email);
-
         return res.status(200).json({ success: true });
       } else {
         throw new RequestError("Email is not found", 404);

@@ -187,6 +187,30 @@ module.exports = {
       });
   },
 
+  async sendReset(req, res, next) {
+    const { email } = req.body;
+    try {
+      const user = await db.user.findOne({
+        where: {
+          email: email,
+        },
+      });
+      // console.log("User", user)
+      if (user) {
+        await mailer.sendResetUserPassword(email).catch((error) => {
+          console.error("Error in sendResetUserPassword:", error);
+          throw error; // re-throw the error to be caught in the outer catch block
+        });
+        return res.status(200).json({ success: true });
+      } else {
+        throw new RequestError("Email is not found", 404);
+      }
+    } catch (err) {
+      console.log(err);
+      next(err); // pass the error to the next middleware for centralized error handling
+    }
+  },
+
   async userUpdate(req, res, next) {
     const { id, firstName, lastName, email, address, password, role, verify } =
       req.body;
@@ -206,7 +230,7 @@ module.exports = {
             role: role ? role : user.role,
             verify: verify ? verify : user.verify,
           },
-          { where: { id: id } }
+          { where: { email: email } }
         );
       })
       .then((user) => {
