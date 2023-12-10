@@ -232,7 +232,6 @@ module.exports = {
 
     /* Add user api start here................................*/
     async index(req, res, next) {
-
         try {
             const { razorpay_payment_id, paymentMethod, deliveryAddress, grandTotal, deliveryId, total_discount, shipping_charges, usedRwdPoint } = req.body;
             const productList = req.body.product;
@@ -243,9 +242,9 @@ module.exports = {
             // }
             const t = await db.sequelize.transaction();
             try {
-                const orderId = "OD" + Math.floor(Math.random() * Date.now());
+                const Invoice = "OD" + Math.floor(Math.random() * Date.now());
                 const orderData = {
-                    order_id: orderId,
+                    order_id: Invoice,
                     order_date: new Date().toISOString(),
                     pickup_location: "Primary",
                     channel_id: "",
@@ -331,7 +330,7 @@ module.exports = {
                         orderId: order.id,
                         custId: customer ? customer.id : null,
                         addressId: address ? address.id : parseInt(deliveryId),
-                        productId: product ? product.id : product.productId,
+                        productId: product.id ? product.id : product.productId,
                         varientId: product ? product.variantId : "",
                         qty: product ? product.quantity : "",
                     };
@@ -347,12 +346,12 @@ module.exports = {
                 }, { transaction: t });
 
                 await mailer.sendInvoiceForCustomerNew(
+                    Invoice,
                     req.body,
                     address,
                     order_id,
                     shipment_id,
                     customer,
-                    deliveryAddress,
                     paymentMethod,
                     { transaction: t }
                 );
@@ -360,6 +359,7 @@ module.exports = {
                 if (customer) {
                     await addPointsToWallet(customer, grandTotal, usedRwdPoint)
                 }
+
                 await t.commit();
                 res.status(200).json({ success: true, shiprocketResponse });
             } catch (err) {
@@ -520,7 +520,7 @@ module.exports = {
                     {
                         model: db.Cart_Detail, attributes: ["id", "qty", "status", "deliveryDate"],
                         include: [
-                            { model: db.product, as: "product", attributes: ["id", "name"] },
+                            { model: db.product, as: "product", attributes: ["id", "name", "photo"] },
                             { model: db.ProductVariant, as: "varient" },
                             { model: db.productphoto, as: "thumbnail", attributes: ["productId", "imgUrl"] },
                         ]

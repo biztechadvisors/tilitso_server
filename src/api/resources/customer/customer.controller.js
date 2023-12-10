@@ -40,6 +40,19 @@ function verifyOtp(token) {
   return expiry;
 }
 
+function generateRefCode(name, date) {
+  const parts = [];
+  // Extract the first two letters of the name (uppercase)
+  parts.push(name.substring(0, 2).toUpperCase());
+  // Add the date in YYYYMMDD format
+  parts.push(date.toISOString().split('T')[0].replace(/-/g, ''));
+  // Generate a random number between 1000 and 9999
+  parts.push(Math.floor(Math.random() * (9999 - 1000)) + 1000);
+  // Combine all parts with a hyphen '-' separator
+  return parts.join('-');
+}
+
+
 module.exports = {
 
   // ************************************
@@ -52,84 +65,109 @@ module.exports = {
       email,
       address,
       password,
-      isGoogleAuth
-      // role,
+      isGoogleAuth,
+      referralCode,
     } = req.body;
 
     let passwordHash;
-
     if (password && !isGoogleAuth) {
-      passwordHash = bcrypt.hashSync(password);
+      try {
+        passwordHash = await bcrypt.hash(password);
+      } catch (error) {
+        return next(error);
+      }
     }
 
-    let key = Math.random().toString(36).slice(2);
     let otp;
-
     if (!isGoogleAuth) {
       otp = generateOtp();
     }
 
-    const query = {};
-    query.where = {};
-    query.where.email = email;
-    // query.where.role = role;
+    const date = new Date();
+    const refCode = generateRefCode(firstName, date);
 
     try {
-      db.customer
-        .findAll(query)
-        .then((find) => {
-          if (find && find.length) {
-            if (isGoogleAuth) {
-              return res.status(200).json({
-                message: "User already exists and is using Google Auth",
-              });
+      const existingUser = await db.customer.findOne({ where: { email } });
+
+      if (existingUser) {
+        if (isGoogleAuth) {
+          return res.status(200).json({
+            message: "User already exists and is using Google Auth",
+          });
+        } else {
+          throw new RequestError(
+            "Email already registered, please use another!",
+            409
+          );
+        }
+      }
+
+      const createdUser = await db.customer.create({
+        firstName,
+        lastName,
+        email: email.toLowerCase().trim().replace(/\s/g, ""),
+        gender: gender ? gender : null,
+        phone,
+        refCode,
+        address: address ? address : null,
+        password: passwordHash ? passwordHash : null,
+        verf_key: otp ? otp : null,
+        verify: isGoogleAuth ? 1 : null,
+      });
+
+      if (!createdUser) {
+        return res.status(500).json({ message: "User creation failed", success: false });
+      }
+
+      if (!isGoogleAuth) {
+        try {
+          await mailer.sendOtp(email, otp);
+        } catch (error) {
+          next(error);
+        }
+      }
+
+      // Handle referral code and update wallet points
+      if (referralCode) {
+        const referredUser = await db.customer.findOne({ where: { refCode: referralCode } });
+
+        if (referredUser) {
+          const points = 150;
+
+          try {
+            // Update existing wallet point
+            const existingWalletPoint = await db.wallet_point.findOne({ where: { customerId: referredUser.id } });
+            if (existingWalletPoint) {
+              await db.wallet_point.update({
+                walletPoints: existingWalletPoint.walletPoints + points,
+              }, { where: { customerId: referredUser.id } });
             } else {
-              throw new RequestError(
-                "Email already registered please use another!",
-                409
-              );
+              // Create new wallet point
+              await db.wallet_point.create({
+                walletPoints: points,
+                usedWalletPoints: 0,
+                customerId: referredUser.id,
+              });
             }
+          } catch (error) {
+            console.error("Error updating wallet points", error);
           }
-          return db.customer.create({
-            firstName: firstName,
-            lastName: lastName,
-            email: email.toLowerCase().trim().replace(/\s/g, ""),
-            gender: gender ? gender : null,
-            phone: phone,
-            // role: role ? role : null,
-            address: address ? address : null,
-            password: passwordHash ? passwordHash : null,
-            verf_key: otp ? otp : null,
-            verify: isGoogleAuth ? 1 : null
-          });
-        })
-        .then((user) => {
-          if (user) {
-            if (isGoogleAuth) {
-              return res.status(200).json({
-                message: "User created successfully",
-              });
-            } else {
-              try {
-                return mailer.sendOtp(email, key, otp);
-              } catch (error) {
-                next(error);
-              }
-            }
-          } else
-            res
-              .status(500)
-              .json({ message: "email sent failed", success: false });
-        })
-        .then((list) => {
-          let response = Util.getFormatedResponse(false, {
-            message: "Success",
-          });
-          res.status(response.code).json(response);
-        })
-        .catch((err) => {
-          next(err);
+        }
+      }
+
+      // Create wallet point for the new user
+      try {
+        await db.wallet_point.create({
+          walletPoints: 150, // Initial points
+          usedWalletPoints: 0,
+          customerId: createdUser.id,
         });
+      } catch (error) {
+        console.error("Error creating wallet point for new user", error);
+      }
+
+      const response = Util.getFormatedResponse(false, { message: "Success" });
+      res.status(response.code).json(response);
     } catch (error) {
       next(error);
     }

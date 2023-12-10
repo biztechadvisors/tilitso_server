@@ -456,12 +456,14 @@ module.exports = {
   },
 
   sendInvoiceForCustomerNew: (
-    body,
     Invoice,
+    body,
+    address,
     order_id,
     shipment_id,
-    paymentMethod,
-    customer) => {
+    customer,
+    paymentMethod
+  ) => {
 
     const totalHtml = `
     <!DOCTYPE html>
@@ -503,30 +505,29 @@ module.exports = {
             </ul>
         </div>
 
-        <div style="   display: flex;flex-direction: column;margin: 20px 0;padding: 0 0 10px 38px;">
-            <div style=" margin: 10px 0;">
-                <h1 style="  margin: 0;color: rgb(60, 75, 140);">BILL TO</h1>
-                <p style=" margin: 0;">Name: ${body.deliveryAddress.name} ${' '} 
-                    ${body.deliveryAddress.lastName ? body.deliveryAddress.lastName : " "}</p>
-                <p style=" margin: 0;">${body.deliveryAddress.ShippingAddress}, ${" "} ${body.deliveryAddress.StreetAddress} ,${" "}
-                    ${body.deliveryAddress.city},${" "} ${body.deliveryAddress.states},${" "}
-                    ${body.deliveryAddress.country} </p>
-                <p style=" margin: 0;">Pin code: ${body.deliveryAddress.pincode}</p>
-                <p style=" margin: 0;">Mobile No.: ${body.deliveryAddress.phone}</p>
-            </div>
-
-            <div style=" margin: 10px 0;">
-                <h1 style="  margin: 0;
-                color: rgb(60, 75, 140);">SHIP TO</h1>
-                <p style=" margin: 0;">Name: ${body.deliveryAddress.name2} ${' '} ${body.deliveryAddress.lastName2 ?
-        body.deliveryAddress.lastName2 : " "}</p>
-                <p style=" margin: 0;">${body.deliveryAddress.ShippingAddress2}, ${" "} ${body.deliveryAddress.StreetAddress2} ,${" "}
-                    ${body.deliveryAddress.city2},${" "} ${body.deliveryAddress.states2},${" "}
-                    ${body.deliveryAddress.country2}</p>
-                <p style=" margin: 0;">Pin code: ${body.deliveryAddress.pincode2}</p>
-                <p style=" margin: 0;">Mobile No.: ${body.deliveryAddress.phone2}</p>
-            </div>
+        <div style="display: flex; flex-direction: column; margin: 20px 0; padding: 0 0 10px 38px;">
+        <div style="margin: 10px 0;">
+          <h1 style="margin: 0; color: rgb(60, 75, 140);">BILL TO</h1>
+          <p style="margin: 0;">Name: ${body.deliveryAddress.name} ${body.deliveryAddress.lastName ? body.deliveryAddress.lastName : " "}</p>
+          <p style="margin: 0;">${body.deliveryAddress.ShippingAddress}, ${body.deliveryAddress.StreetAddress}, ${body.deliveryAddress.city}, ${body.deliveryAddress.states}, ${body.deliveryAddress.country}</p>
+          <p style="margin: 0;">Pin code: ${body.deliveryAddress.pincode}</p>
+          <p style="margin: 0;">Mobile No.: ${body.deliveryAddress.phone}</p>
         </div>
+        ${body.deliveryAddress.shipping_is_billing ? `<div style="margin: 10px 0;">
+          <h1 style="margin: 0; color: rgb(60, 75, 140);">SHIP TO</h1>
+          <p style="margin: 0;">Name: ${body.deliveryAddress.name} ${body.deliveryAddress.lastName}</p>
+          <p style="margin: 0;">${body.deliveryAddress.ShippingAddress}, ${body.deliveryAddress.StreetAddress}, ${body.deliveryAddress.city}, ${body.deliveryAddress.states}, ${body.deliveryAddress.country}</p>
+          <p style="margin: 0;">Pin code: ${body.deliveryAddress.pincode}</p>
+          <p style="margin: 0;">Mobile No.: ${body.deliveryAddress.phone}</p>
+        </div>` :
+        `<div style="margin: 10px 0;">
+          <h1 style="margin: 0; color: rgb(60, 75, 140);">SHIP TO</h1>
+          <p style="margin: 0;">Name: ${body.deliveryAddress.name2} ${body.deliveryAddress.lastName2 ? body.deliveryAddress.lastName2 : " "}</p>
+          <p style="margin: 0;">${body.deliveryAddress.ShippingAddress2}, ${body.deliveryAddress.StreetAddress2}, ${body.deliveryAddress.city2}, ${body.deliveryAddress.states2}, ${body.deliveryAddress.country2}</p>
+          <p style="margin: 0;">Pin code: ${body.deliveryAddress.pincode2}</p>
+          <p style="margin: 0;">Mobile No.: ${body.deliveryAddress.phone2}</p>
+        </div>`}
+      </div>      
 
         <div style="overflow-x: auto;">
             <table style=" width: 100%;background-color: #fff;margin: 20px 0;border-collapse: collapse;border-bottom: solid 5px rgb(60, 75, 140);">
