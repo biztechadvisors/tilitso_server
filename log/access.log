@@ -2781,3 +2781,14 @@
 [0mPOST /api/order/create [32m200[0m 1099.364 ms - 200[0m
 [0mOPTIONS /api/settings?language=en [32m204[0m 7.087 ms - 0[0m
 [0mGET /api/settings?language=en [33m404[0m 8.773 ms - 2641[0m
+[0mPOST /api/customer/register [31m500[0m 136.809 ms - 34[0m
+[0mPOST /api/customer/register [31m500[0m 29.900 ms - 34[0m
+[0mPOST /api/customer/register [31m500[0m 26.826 ms - 34[0m
+[0mPOST /api/customer/register [31m500[0m 9.382 ms - 34[0m
+[0mPOST /api/customer/register [31m500[0m 28.860 ms - 34[0m
+[0mPOST /api/customer/register [31m500[0m 28.389 ms - 34[0m
+[0mPOST /api/customer/register [31m500[0m 21.410 ms - 36[0m
+[0mPOST /api/customer/register [31m500[0m 20.988 ms - 36[0m
+[0mPOST /api/customer/register [31m500[0m 6028.921 ms - 30[0m
+[0mPOST /api/customer/register [32m200[0m 11038.655 ms - 56[0m
+[0mPOST /api/customer/register [32m200[0m 11152.508 ms - 56[0m

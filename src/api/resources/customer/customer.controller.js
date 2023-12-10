@@ -71,11 +71,7 @@ module.exports = {
 
     let passwordHash;
     if (password && !isGoogleAuth) {
-      try {
-        passwordHash = await bcrypt.hash(password);
-      } catch (error) {
-        return next(error);
-      }
+      passwordHash = bcrypt.hashSync(password);
     }
 
     let otp;
@@ -83,22 +79,29 @@ module.exports = {
       otp = generateOtp();
     }
 
-    const date = new Date();
-    const refCode = generateRefCode(firstName, date);
+    const generateRefCode = (firstName) => {
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+      let refCode1 = "";
+      const initials = firstName.split(" ").map((name) => name).join("").toUpperCase();
+      for (let i = 0; i < 6; i++) {
+        refCode1 += chars[Math.floor(Math.random() * chars.length)];
+      }
+      return `${initials}${refCode1}`;
+    };
+
+    const refCode = await generateRefCode(firstName);
 
     try {
-      const existingUser = await db.customer.findOne({ where: { email } });
-
+      const existingUser = await db.customer.findOne({ where: { email: email } });
       if (existingUser) {
         if (isGoogleAuth) {
           return res.status(200).json({
             message: "User already exists and is using Google Auth",
           });
         } else {
-          throw new RequestError(
-            "Email already registered, please use another!",
-            409
-          );
+          return res.status(409).json({
+            message: "Email already registered, please use another!",
+          });
         }
       }
 
@@ -123,26 +126,22 @@ module.exports = {
         try {
           await mailer.sendOtp(email, otp);
         } catch (error) {
-          next(error);
+          console.error("Error sending OTP", error);
+          return res.status(500).json({ message: "Error sending OTP" });
         }
       }
 
-      // Handle referral code and update wallet points
       if (referralCode) {
         const referredUser = await db.customer.findOne({ where: { refCode: referralCode } });
-
         if (referredUser) {
           const points = 150;
-
           try {
-            // Update existing wallet point
             const existingWalletPoint = await db.wallet_point.findOne({ where: { customerId: referredUser.id } });
             if (existingWalletPoint) {
               await db.wallet_point.update({
                 walletPoints: existingWalletPoint.walletPoints + points,
               }, { where: { customerId: referredUser.id } });
             } else {
-              // Create new wallet point
               await db.wallet_point.create({
                 walletPoints: points,
                 usedWalletPoints: 0,
@@ -155,10 +154,9 @@ module.exports = {
         }
       }
 
-      // Create wallet point for the new user
       try {
         await db.wallet_point.create({
-          walletPoints: 150, // Initial points
+          walletPoints: 150,
           usedWalletPoints: 0,
           customerId: createdUser.id,
         });
@@ -169,7 +167,8 @@ module.exports = {
       const response = Util.getFormatedResponse(false, { message: "Success" });
       res.status(response.code).json(response);
     } catch (error) {
-      next(error);
+      console.error("Error in addUser", error);
+      res.status(500).json({ message: "Error in addUser" });
     }
   },
 
