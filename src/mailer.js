@@ -4,7 +4,7 @@ const { db } = require("./models");
 const CryptoJS = require("crypto-js");
 
 module.exports = {
-  sendOtp: (email, key, otp) => {
+  sendOtp: (email, otp) => {
     return new Promise((resolve, reject) => {
       try {
         db.customer.findOne({ where: { email: email } }).then((user) => {
@@ -26,7 +26,7 @@ module.exports = {
                 subject: "Tilitso: OTP for Verify Email",
                 html:
                   "Dear user,<br><br> Thank you for registering with Tilitso.<br> <br> <b> <strong>One Time OTP:</strong> " +
-                  otp +
+                   otp +
                   " </b><br> <br> This link will expire in 2 minute. <br> This is a system generated mail. Please do not reply to this email ID.<br>Warm Regards,<br> Customer Care<br> Tilitso",
               },
               function (error, info) {

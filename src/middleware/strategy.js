@@ -100,17 +100,17 @@ exports.jwtStrategy = (req, res, next) => {
     if (err && err == "expired") {
       return json
         ? res.status(500).json({ errors: ["Session is expired"] })
-        : res.redirect("https://admin.souqarena.com/auth/login");
+        : res.redirect("https://tilitso.in/auth/login");
     }
     if (err && err == "invalid") {
       return json
         ? res.status(500).json({ errors: ["Invalid token recieved"] })
-        : res.redirect("https://admin.souqarena.com/auth/login");
+        : res.redirect("https://tilitso.in/auth/login");
     }
     if (err && err == "user") {
       return json
         ? res.status(500).json({ errors: ["Invalid user recieved"] })
-        : res.redirect("https://admin.souqarena.com/auth/login");
+        : res.redirect("https://tilitso.in/auth/login");
     }
     if (err && Object.keys(err).length) {
       return res.status(500).json({ errors: [err] });
@@ -205,7 +205,7 @@ exports.jwtCustomerStrategy = (req, res, next) => {
       }
       if (err && err == "user") {
         return res.status(403).json({ errors: ["Invalid user recieved"] });
-        /* res.redirect('https://souqarena.com/login') */ ("");
+        /* res.redirect('https://tilitso.in/login') */ ("");
       }
       if (err && Object.keys(err).length) {
         return res.status(401).json({ errors: [err] });
@@ -215,7 +215,7 @@ exports.jwtCustomerStrategy = (req, res, next) => {
       }
       if (!user) {
         return res.status(401).json({ errors: ["Invalid user recieved"] });
-        /* res.redirect('https://souqarena.com/login') */ ("");
+        /* res.redirect('https://tilitso.in/login') */ ("");
       }
       req.user = user;
       next();

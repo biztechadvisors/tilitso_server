@@ -124,6 +124,7 @@ module.exports = {
 
       if (!isGoogleAuth) {
         try {
+          console.log("OTP", otp)
           await mailer.sendOtp(email, otp);
         } catch (error) {
           console.error("Error sending OTP", error);
