@@ -1514,6 +1514,16 @@ module.exports = {
     }
   },
 
+  async getAllReviewList(req, res) {
+    try {
+      const reviewList = await db.Review.findAll();
+      return res.status(201).json(reviewList);
+    } catch (error) {
+      // console.error(error);
+      return res.status(500).json({ error: 'An error occurred while fetching the reviews.' });
+    }
+  },
+
   async getAllProductList(req, res, next) {
 
     const limit = req.query.limit ? parseInt(req.query.limit) : 10;

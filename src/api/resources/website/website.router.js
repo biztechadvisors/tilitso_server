@@ -23,6 +23,8 @@ websiteRouter.route("/relatedProduct").get(websiteController.relatedProduct);
 
 websiteRouter.route("/reveiw-list").post(websiteController.getReviewList);
 
+websiteRouter.route("/reveiw").get(websiteController.getAllReviewList)
+
 websiteRouter.route("/image/banner").get(websiteController.getBannerList);
 
 websiteRouter.route("/popular/category-list").get(websiteController.getPopularCategory);
@@ -33,20 +35,20 @@ websiteRouter.route("/catalog/category/search").get(websiteController.getFilterA
 
 websiteRouter.route("/autosuggest/search").get(websiteController.getAutoSuggestList);
 
-websiteRouter.route("/address/create").post( websiteController.createAddress);
+websiteRouter.route("/address/create").post(websiteController.createAddress);
 
 websiteRouter.route("/customization").post(websiteController.customizationPage);
 
 websiteRouter.route("/customization-List").get(websiteController.customizationList);
 
 // Order
-websiteRouter.route("/order/product_list").post( websiteController.orderProductList);
+websiteRouter.route("/order/product_list").post(websiteController.orderProductList);
 
-websiteRouter.route("/order/history").get( websiteController.orderHistory);
+websiteRouter.route("/order/history").get(websiteController.orderHistory);
 
-websiteRouter.route("/order/product_detail").post( websiteController.orderProductDetail);
+websiteRouter.route("/order/product_detail").post(websiteController.orderProductDetail);
 
-websiteRouter.route("/order/cancel-by-product").post( websiteController.orderdProductCancel);
+websiteRouter.route("/order/cancel-by-product").post(websiteController.orderdProductCancel);
 
 websiteRouter.route("/allEvent").get(websiteController.allEvent);
 
