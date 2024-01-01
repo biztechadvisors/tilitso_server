@@ -318,7 +318,7 @@ module.exports = {
                     paymentmethod: paymentMethod,
                     shipment_id: shipment_id,
                     order_Id: order_id,
-                    razorpay_payment_id: razorpay_payment_id,
+                    razorpay_payment_id: razorpay_payment_id ? razorpay_payment_id : null,
                     totalDiscount: req.body.total_discount ? req.body.total_discount : null,
                     localDeliveryCharge: shipping_charges,
                     couponCode: req.body.couponCode ? req.body.couponCode : null
