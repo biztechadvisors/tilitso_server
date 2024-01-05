@@ -3,7 +3,7 @@ module.exports = {
     db_host: 'localhost',
     db_user: 'root',
     db_password: '',
-    api_base_url: 'http://localhost:5050',
+    api_base_url: 'http://localhost:5000',
 }
 
 module.exports = {

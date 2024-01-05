@@ -12,7 +12,7 @@ module.exports = {
             var smtpTransport = nodemailer.createTransport({
               host: process.env.MAIL_HOST,
               port: process.env.MAIL_PORT,
-              secure: false,
+              secure: true,
               auth: {
                 user: process.env.MAIL_USERNAME,
                 pass: process.env.MAIL_PASSWORD,
@@ -26,7 +26,7 @@ module.exports = {
                 subject: "Tilitso: OTP for Verify Email",
                 html:
                   "Dear user,<br><br> Thank you for registering with Tilitso.<br> <br> <b> <strong>One Time OTP:</strong> " +
-                   otp +
+                  otp +
                   " </b><br> <br> This link will expire in 2 minute. <br> This is a system generated mail. Please do not reply to this email ID.<br>Warm Regards,<br> Customer Care<br> Tilitso",
               },
               function (error, info) {
@@ -59,7 +59,7 @@ module.exports = {
             var smtpTransport = nodemailer.createTransport({
               host: process.env.MAIL_HOST,
               port: process.env.MAIL_PORT,
-              secure: false,
+              secure: true,
               auth: {
                 user: process.env.MAIL_USERNAME,
                 pass: process.env.MAIL_PASSWORD,
@@ -70,9 +70,9 @@ module.exports = {
               {
                 from: process.env.MAIL_FROM,
                 to: email,
-                subject: "souqarena: Online Shopping Center",
+                subject: "Tilitso: Online Shopping Center",
                 html:
-                  "Dear user,<br><br> Thank you for registering with Janakpur.<br> <br> <b> <strong>Click Here:</strong> " +
+                  "Dear user,<br><br> Thank you for registering with Tilitso.<br> <br> <b> <strong>Click Here:</strong> " +
                   process.env.SALON_URL +
                   "/verify/" +
                   email +
@@ -106,8 +106,8 @@ module.exports = {
     var smtpTransport = nodemailer.createTransport({
       host: process.env.MAIL_HOST,
       port: process.env.MAIL_PORT,
-      ignoreTLS: false,
-      secure: false,
+      
+      secure: true,
       auth: {
         user: process.env.MAIL_USERNAME,
         pass: process.env.MAIL_PASSWORD,
@@ -143,7 +143,7 @@ module.exports = {
             var smtpTransport = nodemailer.createTransport({
               host: process.env.MAIL_HOST,
               port: process.env.MAIL_PORT,
-              secure: false,
+              secure: true,
               auth: {
                 user: process.env.MAIL_USERNAME,
                 pass: process.env.MAIL_PASSWORD,
@@ -236,7 +236,7 @@ module.exports = {
             var smtpTransport = nodemailer.createTransport({
               host: process.env.MAIL_HOST,
               port: process.env.MAIL_PORT,
-              secure: false,
+              secure: true,
               auth: {
                 user: process.env.MAIL_USERNAME,
                 pass: process.env.MAIL_PASSWORD,
@@ -417,8 +417,8 @@ module.exports = {
                 var smtpTransport = nodemailer.createTransport({
                   host: process.env.MAIL_HOST,
                   port: process.env.MAIL_PORT,
-                  ignoreTLS: false,
-                  secure: false,
+                  
+                  secure: true,
                   auth: {
                     user: process.env.MAIL_USERNAME,
                     pass: process.env.MAIL_PASSWORD,
@@ -572,8 +572,8 @@ module.exports = {
         var smtpTransport = nodemailer.createTransport({
           host: process.env.MAIL_HOST,
           port: process.env.MAIL_PORT,
-          ignoreTLS: false,
-          secure: false,
+          
+          secure: true,
           auth: {
             user: process.env.MAIL_USERNAME,
             pass: process.env.MAIL_PASSWORD,
@@ -707,8 +707,8 @@ module.exports = {
             const smtpTransport = nodemailer.createTransport({
               host: process.env.MAIL_HOST,
               port: process.env.MAIL_PORT,
-              ignoreTLS: false,
-              secure: false,
+              
+              secure: true,
               auth: {
                 user: process.env.MAIL_USERNAME,
                 pass: process.env.MAIL_PASSWORD,
@@ -783,8 +783,8 @@ module.exports = {
     const smtpTransport = nodemailer.createTransport({
       host: process.env.MAIL_HOST,
       port: process.env.MAIL_PORT,
-      ignoreTLS: false,
-      secure: false,
+      
+      secure: true,
       auth: {
         user: process.env.MAIL_USERNAME,
         pass: process.env.MAIL_PASSWORD,

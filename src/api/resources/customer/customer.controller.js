@@ -149,20 +149,20 @@ module.exports = {
                 customerId: referredUser.id,
               });
             }
+            try {
+              await db.wallet_point.create({
+                walletPoints: 150,
+                usedWalletPoints: 0,
+                customerId: createdUser.id,
+              });
+            } catch (error) {
+              console.error("Error creating wallet point for new user", error);
+            }
+
           } catch (error) {
             console.error("Error updating wallet points", error);
           }
         }
-      }
-
-      try {
-        await db.wallet_point.create({
-          walletPoints: 150,
-          usedWalletPoints: 0,
-          customerId: createdUser.id,
-        });
-      } catch (error) {
-        console.error("Error creating wallet point for new user", error);
       }
 
       const response = Util.getFormatedResponse(false, { message: "Success" });
