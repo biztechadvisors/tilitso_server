@@ -583,7 +583,13 @@ module.exports = {
         smtpTransport.sendMail(
           {
             from: process.env.MAIL_FROM,
-            to: customer ? customer.email : body.deliveryAddress.email == body.deliveryAddress.email2 ? body.deliveryAddress.email : body.deliveryAddress.email2 && body.deliveryAddress.email,
+            to: customer && customer.email === body.deliveryAddress.email
+            ? body.deliveryAddress.email
+            : customer
+              ? body.deliveryAddress.email
+                ? [customer.email, body.deliveryAddress.email]
+                : customer.email
+              : body.deliveryAddress.email,
             subject:
               "Your Tilitso Order Confirmation. Please share your feedback",
             html: totalHtml,
