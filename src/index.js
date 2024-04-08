@@ -23,7 +23,7 @@ app.use(
 );
 app.options("*", cors());
 
-app.use("/slug", (req, res, next) => {
+app.get("/slug", (req, res, next) => {
   res.send("Server is running on home path");
 });
 
