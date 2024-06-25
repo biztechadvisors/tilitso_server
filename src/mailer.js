@@ -244,7 +244,7 @@ module.exports = {
               tls: { rejectUnauthorized: false },
             });
 
-            const link = `http://localhost:3000/auth/ForgotPass?email=${email}`
+            const link = `${APP_URL}/auth/ForgotPass?email=${email}`
 
             const emailContent = `
       <html>

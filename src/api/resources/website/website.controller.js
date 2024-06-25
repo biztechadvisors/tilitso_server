@@ -1559,6 +1559,7 @@ module.exports = {
           const variantMemory = new Set();
 
           for (const variant of value.ProductVariants) {
+
             if (variant.color) {
               variantColors.add(variant.color.TITLE);
             } else if (variant.colorId) {
@@ -1568,6 +1569,7 @@ module.exports = {
               }
             }
             variantMemory.add(variant.memory);
+            
           }
 
           const dataList = {

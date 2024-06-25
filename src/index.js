@@ -36,6 +36,7 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
+  console.error(error); // Log the error
   if (!(error instanceof RequestError)) {
     error = new RequestError("Some Error Occurred", 500, error.message);
   }
@@ -59,7 +60,7 @@ db.sequelize
     scheduler.init();
   })
   .catch(function (err) {
-    console.log(err, "Something went wrong with the Database Update!");
+    console.error(err, "Something went wrong with the Database Update!"); // Log the error
   });
 
 /* Start Listening service */
